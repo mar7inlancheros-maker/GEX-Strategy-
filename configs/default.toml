@@ -1,0 +1,202 @@
+# Configuracion por defecto de gamma_quant.
+#
+# REGLA DEL PROYECTO: ningun numero que sea una DECISION DE MODELADO puede vivir
+# en el codigo. Si alguien puede discrepar de un valor, va aqui, y su valor entra
+# en el registro del experimento. Un umbral escondido en un `if` es un grado de
+# libertad que nadie audita y que acaba sobreajustado.
+
+# =============================================================================
+[meta]
+# =============================================================================
+config_version = "0.1.0"
+# Semilla unica de todo el proyecto. Cualquier proceso estocastico (bootstrap,
+# permutaciones, Monte Carlo, splits) la deriva de aqui. Reproducibilidad.
+random_seed = 20260831
+
+
+# =============================================================================
+[data]
+# =============================================================================
+symbols = ["SPY", "SPX"]
+data_root = "data"
+
+# --- EL PARAMETRO MAS PELIGROSO DEL PROYECTO ---
+# El OCC publica el open interest despues del cierre, ya consolidado. El OI que
+# "ocurre" hoy no se conoce hasta manana por la manana. Usar el OI del mismo dia
+# para operar hoy es LOOK-AHEAD PURO, y es el error mas comun en el GEX retail:
+# infla el resultado justo en los dias de mayor actividad, que son los que mas
+# pesan en el backtest.
+#
+# 1 = usa el OI publicado ayer. Es lo correcto.
+# 0 = look-ahead deliberado. Se corre SOLO para medir cuanto infla, nunca para
+#     reportar rendimiento.
+oi_lag_days = 1
+
+# Snapshot de cadena diferido: CBOE no sella la hora exacta del quote, asi que
+# el timestamp lo pone el archivador al recibir. Diferencia tipica ~15 min.
+# Se guarda para poder medir el desfase, no para ignorarlo.
+snapshot_delay_minutes = 15
+
+
+# =============================================================================
+[universe.SPY]
+# =============================================================================
+multiplier = 100
+exercise_style = "american"     # <- Black-Scholes es una APROXIMACION aqui (A4)
+settlement = "physical"
+pays_dividend = true
+dividend_yield = 0.012          # aproximado; se refresca desde datos reales
+cboe_endpoint_symbol = "SPY"
+
+[universe.SPX]
+multiplier = 100
+exercise_style = "european"     # BSM es apropiado
+settlement = "cash"
+pays_dividend = false           # la opcion sobre indice no cobra dividendo
+dividend_yield = 0.0
+cboe_endpoint_symbol = "_SPX"
+# Los mensuales de SPX liquidan en AM (SET) con el precio de apertura del
+# viernes. Tratar su vencimiento como PM desplaza el 0DTE un dia entero.
+monthly_am_settlement = true
+
+
+# =============================================================================
+[gex]
+# =============================================================================
+# --- Convencion de signo del dealer (SUPUESTO A1) ---
+# "conventional" : dealers cortos de calls y cortos de puts frente al cliente
+#                  -> gamma del dealer: calls +, puts -
+# "all_positive" : todo suma (mide magnitud de gamma, no direccion)
+# "inverted"     : convencion volteada. NO es una creencia: es el PLACEBO. Si la
+#                  estrategia gana igual con el signo al reves, el signo no es lo
+#                  que la mueve.
+# "oi_weighted_flow" : reservado; exige datos de flujo que hoy no tenemos.
+convention = "conventional"
+
+# --- Definicion de GEX (SUPUESTO A3) ---
+# "spot_scaled"  : gamma * OI * mult * S^2 * 0.01 * signo
+#                  Unidades: $ de delta que el dealer debe recomprar/vender por
+#                  cada movimiento del 1% en el subyacente. Es la definicion mas
+#                  interpretable economicamente y la mas usada.
+# "naive"        : gamma * OI * mult * signo
+#                  Unidades: contratos-gamma. Comparable entre strikes pero no
+#                  entre niveles de precio ni entre activos.
+# "dollar_delta" : gamma * OI * mult * S * signo
+#                  $ de delta por cada $1 de movimiento.
+# "notional"     : gamma * OI * mult * S^2 * signo  (sin el 1%)
+#
+# NO se elige por gusto: las cuatro se calculan y se comparan por poder
+# predictivo (Fase 8). La que quede aqui es solo la que usan los graficos.
+definition = "spot_scaled"
+
+# Fuente de la gamma:
+#   "own"    : la calculamos con BSM desde la IV. Auditable, y unica opcion si
+#              el proveedor no la trae.
+#   "vendor" : la del proveedor (CBOE la da).
+#   "both"   : ambas, y se reporta la discrepancia. Es lo que queremos al principio.
+gamma_source = "both"
+
+# Tolerancia relativa al comparar nuestra gamma con la del proveedor. Por encima,
+# el contrato entra en el informe de calidad.
+gamma_cross_check_rtol = 0.05
+
+# Tipo libre de riesgo plano (A6). Se barre su sensibilidad; la gamma apenas
+# depende de el, pero el supuesto queda escrito.
+risk_free_rate = 0.04
+
+# Filtros de la cadena ANTES de agregar. Cada uno es una decision discutible:
+#   - un strike a 3x el spot aporta gamma ~0 pero puede traer IV basura que
+#     contamine; se excluye por ruido, no por conveniencia.
+#   - los vencimientos muy largos (LEAPS) tienen OI alto y gamma baja: pesan poco
+#     pero ensucian. Se controla, no se asume.
+min_moneyness = 0.70            # strike / spot
+max_moneyness = 1.30
+max_days_to_expiry = 365
+min_open_interest = 0           # 0 = no filtrar. Filtrar OI bajo es tentador y sesga.
+
+
+# =============================================================================
+[gamma_flip]
+# =============================================================================
+# El flip es la raiz de GEX(S)=0 reevaluando TODA la cadena a cada spot candidato
+# (no interpolando el perfil por strike, que es el atajo habitual y esta mal:
+# la gamma de cada contrato cambia cuando cambia S).
+search_lower_pct = 0.80         # busca entre 80% y 120% del spot
+search_upper_pct = 1.20
+n_grid = 121                    # rejilla previa para localizar cambios de signo
+tolerance = 0.01                # $ de precision en la raiz
+max_iterations = 100
+# Si hay varias raices (ocurre), cual se reporta:
+#   "nearest_spot" : la mas cercana al spot. Es la economicamente relevante.
+#   "lowest"/"highest": extremos, para diagnostico.
+root_selection = "nearest_spot"
+
+
+# =============================================================================
+[gamma_walls]
+# =============================================================================
+# "Grande" no se define a ojo. Tres metodos, y se comparan:
+#   "percentile" : strikes por encima del percentil p de |GEX|
+#   "zscore"     : desviaciones tipicas sobre la media del perfil
+#   "topk"       : los k mayores, sin pretension estadistica
+method = "percentile"
+percentile = 95.0
+zscore_threshold = 2.0
+top_k = 5
+# Agrupa strikes contiguos en un solo muro: tres strikes seguidos con gamma alta
+# son UN muro, no tres.
+cluster_adjacent_strikes = true
+cluster_max_gap = 2             # en numero de strikes
+
+
+# =============================================================================
+[costs]
+# =============================================================================
+# Tres escalones SIEMPRE. Una estrategia que solo gana en el optimista es una
+# estrategia que no gana.
+[costs.optimistic]
+spread_capture = 0.25           # fraccion del spread que pagamos (0.25 = cruzamos poco)
+commission_per_share = 0.0000
+slippage_bps = 0.5
+market_impact_bps = 0.0
+
+[costs.base]
+spread_capture = 0.50           # mitad del spread: lo normal en SPY liquido
+commission_per_share = 0.0035
+slippage_bps = 1.0
+market_impact_bps = 0.5
+
+[costs.conservative]
+spread_capture = 1.00           # cruzamos el spread entero
+commission_per_share = 0.0050
+slippage_bps = 2.0
+market_impact_bps = 2.0
+
+
+# =============================================================================
+[backtest]
+# =============================================================================
+initial_capital = 1_000_000.0
+max_gross_exposure = 1.0        # sin apalancamiento por defecto
+max_position_pct = 1.0
+daily_loss_limit_pct = 0.02     # corta el dia
+vol_target_annual = 0.10
+allow_overnight = true
+trading_start = "09:35"         # no operamos en la subasta de apertura
+trading_end = "15:55"
+timezone = "America/New_York"
+
+
+# =============================================================================
+[research]
+# =============================================================================
+forward_horizons = [1, 5, 30]           # dias, para retornos
+rv_horizons = [1, 5]                    # dias, para volatilidad realizada
+n_quantiles = 5
+bootstrap_blocks = 20                   # bootstrap por bloques: los retornos no son i.i.d.
+bootstrap_iterations = 2000
+newey_west_lags = 0                     # 0 = auto: ~ h^(1/3) por horizonte
+
+# Escribir aqui es OBLIGATORIO por cada configuracion evaluada. El Sharpe
+# deflactado y el PBO leen este contador. Append-only.
+experiment_registry = "reports/experiment_registry.jsonl"

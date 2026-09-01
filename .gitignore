@@ -1,0 +1,41 @@
+# Entorno virtual
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.eggs/
+
+# --- DATOS ---
+# El archivo de cadenas pesa y se regenera solo hacia delante. NO se comitea:
+# un snapshot de SPX son ~28.600 filas y se toma a diario.
+#
+# OJO: `data/archive/` es IRREEMPLAZABLE. No existe forma de recuperar un dia
+# perdido: el endpoint de CBOE solo sirve el presente. Que este fuera de git no
+# significa que sea desechable -- necesita copia de seguridad propia.
+data/raw/
+data/processed/
+data/archive/
+*.parquet
+*.csv.gz
+
+# Salidas de ejecucion e informes generados
+output/
+runs/
+results/
+reports/figures/
+reports/*.html
+reports/experiment_registry.jsonl
+
+# Credenciales
+.env
+.env.*
+!.env.example
+
+# Windows / OneDrive
+Thumbs.db
+desktop.ini

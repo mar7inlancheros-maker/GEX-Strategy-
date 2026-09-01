@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gamma-quant"
+version = "0.1.0"
+description = "Contraste sistematico de la hipotesis de Gamma Exposure (GEX) de dealers sobre SPY/SPX"
+requires-python = ">=3.11"
+
+# El nucleo -- griegas, motor GEX, gamma flip, walls, features y backtest -- corre
+# con numpy + pandas. scipy entra solo por `brentq` (raiz del gamma flip) y por los
+# contrastes estadisticos; ambos tienen fallback documentado.
+#
+# La configuracion es TOML y `tomllib` es biblioteca estandar desde 3.11, asi que
+# no hace falta PyYAML. Igual que en el proyecto hermano.
+dependencies = [
+    "pandas>=2.2",
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "requests>=2.31",
+]
+
+[project.optional-dependencies]
+# Almacen Parquet. Una cadena de SPX son ~28.600 filas por snapshot; en CSV se
+# pierden los tipos y ocupa un orden de magnitud mas.
+storage = ["pyarrow>=15"]
+
+# Subyacente diario/intradia y VIX.
+prices = ["yfinance>=0.2"]
+
+# Graficos de investigacion.
+plots = ["matplotlib>=3.8", "seaborn>=0.13"]
+
+# Contrastes: Newey-West, HAR-RV, regresiones.
+stats = ["statsmodels>=0.14", "scikit-learn>=1.4"]
+
+# Fase 14 unicamente, y solo si el baseline tiene señal.
+ml = ["scikit-learn>=1.4"]
+
+all = [
+    "pyarrow>=15",
+    "yfinance>=0.2",
+    "matplotlib>=3.8",
+    "seaborn>=0.13",
+    "statsmodels>=0.14",
+    "scikit-learn>=1.4",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["gamma_quant*"]
