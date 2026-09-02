@@ -42,6 +42,76 @@ def project_root() -> Path:
     return Path(__file__).resolve().parents[1]
 
 
+# --------------------------------------------------------------------------- #
+# Secretos
+# --------------------------------------------------------------------------- #
+
+_ENV_LOADED = False
+
+
+def load_env(path: str | Path | None = None, *, override: bool = False) -> dict[str, str]:
+    """Carga `.env` en os.environ. Sin dependencias externas.
+
+    POR QUE NO python-dotenv
+    ------------------------
+    Son treinta lineas y una dependencia menos, igual que en el proyecto hermano.
+
+    POR QUE utf-8-sig Y NO utf-8
+    ----------------------------
+    Porque en Windows esto pasa de verdad: `Out-File -Encoding utf8` y
+    `Set-Content` escriben un BOM al principio del fichero. Con `utf-8` el BOM se
+    lee como parte del texto y la PRIMERA clave del fichero pasa a llamarse
+    "\\ufeffALPHAVANTAGE_API_KEY", que no coincide con nada y ademas es invisible
+    al mirarlo. El sintoma es "no encuentro la clave" con la clave delante.
+    `utf-8-sig` se come el BOM si esta y no molesta si no.
+
+    Las variables que YA existen en el entorno ganan por defecto (`override=False`):
+    en un servidor el entorno real manda sobre un fichero olvidado en disco.
+    """
+    global _ENV_LOADED
+    env_path = Path(path) if path is not None else project_root() / ".env"
+    loaded: dict[str, str] = {}
+    if not env_path.is_file():
+        _ENV_LOADED = True
+        return loaded
+
+    for raw in env_path.read_text(encoding="utf-8-sig", errors="replace").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")   # comillas sobrantes al pegar
+        if not key:
+            continue
+        loaded[key] = value
+        if override or key not in os.environ:
+            os.environ[key] = value
+
+    _ENV_LOADED = True
+    return loaded
+
+
+def get_secret(name: str, *, required: bool = False) -> str | None:
+    """Lee un secreto del entorno, cargando `.env` la primera vez.
+
+    Nunca devuelve cadena vacia disfrazada de valor: una clave puesta como
+    `ALPHAVANTAGE_API_KEY=` (sin nada detras) es lo mismo que no tenerla, y
+    conviene que falle donde se pide y no dentro de una peticion HTTP.
+    """
+    if not _ENV_LOADED:
+        load_env()
+    value = (os.environ.get(name) or "").strip()
+    if not value:
+        if required:
+            raise RuntimeError(
+                f"falta el secreto '{name}'. Ponlo en {project_root() / '.env'} "
+                f"(o exportalo como variable de entorno)."
+            )
+        return None
+    return value
+
+
 def config_dir() -> Path:
     return project_root() / "configs"
 

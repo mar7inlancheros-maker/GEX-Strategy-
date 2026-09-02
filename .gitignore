@@ -17,19 +17,40 @@ dist/
 # OJO: `data/archive/` es IRREEMPLAZABLE. No existe forma de recuperar un dia
 # perdido: el endpoint de CBOE solo sirve el presente. Que este fuera de git no
 # significa que sea desechable -- necesita copia de seguridad propia.
-data/raw/
-data/processed/
+# `dir/*` y no `dir/`: git no desciende en un directorio excluido, asi que con
+# `data/raw/` la excepcion `!data/raw/.gitkeep` de mas abajo no llegaria a
+# evaluarse nunca y un clon nuevo no tendria la carpeta.
+data/raw/*
+data/processed/*
 data/archive/
 *.parquet
 *.csv.gz
 
-# Salidas de ejecucion e informes generados
+# EXCEPCION: `data/external/` SI se versiona. Son entradas manuales que nadie
+# puede regenerar -- los exports XLSX de OMON del Terminal de Bloomberg contra los
+# que esta calibrado el motor. Pesan ~30 KB y sin ellos `tests/test_bloomberg_omon.py`
+# se salta entero y en silencio, que es la peor forma de perder una prueba.
+!data/external/
+!data/external/**
+
+# Marcadores para que un clon nuevo tenga la estructura del PROJECT_PLAN aunque
+# el contenido no se versione.
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# --- SALIDAS DE EJECUCION E INFORMES GENERADOS ---
+# Todo lo de aqui lo escribe un proceso, no una persona. Versionarlo produce un
+# conflicto por cada ejecucion y, peor, hace creer que un informe con fecha de
+# hace tres semanas describe el estado de hoy.
 output/
 runs/
 results/
 reports/figures/
+reports/quality/
 reports/*.html
-reports/experiment_registry.jsonl
+reports/*.log
+reports/*.json
+reports/*.jsonl
 
 # Credenciales
 .env

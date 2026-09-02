@@ -114,34 +114,54 @@ Se replican a propósito, para que ambas estrategias se lean como un solo reposi
 
 ```
 GEX Strategy/
-├── gamma_quant/
+├── archive_chains.py       ENTRADA OPERATIVA — archivador diario de cadenas de CBOE
+├── run_tests.py            ENTRADA — encadena las suites de `tests/`
+├── gamma_quant/            el motor. Importable, puro, testeado
+│   ├── config.py           carga del TOML, rutas, secretos
+│   ├── logging_setup.py    logging con fichero para procesos desatendidos
+│   ├── registry.py         registro de experimentos append-only
 │   ├── data/
-│   │   ├── ingestion/      adaptadores de proveedor tras un único ABC (CBOE, yfinance, sintético)
-│   │   ├── cleaning/       normalización al esquema canónico
-│   │   ├── validation/     controles de calidad -> informe; nada se descarta en silencio
-│   │   └── storage/        almacén Parquet, particionado por (símbolo, fecha)
+│   │   ├── ingestion/      base.py (ABC + esquema canónico), cboe.py, bloomberg_omon.py, synthetic.py
+│   │   ├── cleaning/       VACÍO — hoy la normalización vive en `ingestion/base.py::ensure_canonical`
+│   │   ├── validation/     quality.py — controles de calidad -> informe; nada se descarta en silencio
+│   │   └── storage/        panel.py — almacén Parquet, particionado por (símbolo, año)
 │   ├── options/
-│   │   ├── pricing.py      Black-Scholes-Merton europeo; límites americanos documentados
+│   │   ├── pricing.py      Black-Scholes-Merton europeo; binomial americano para medir el sesgo
 │   │   ├── greeks.py       delta/gamma/vega/theta, forma cerrada + manejo de límites
 │   │   ├── gex.py          motor GEX: contrato/strike/vencimiento/total, convenciones enchufables
 │   │   ├── gamma_flip.py   raíz de GEX(S*) = 0
 │   │   └── gamma_walls.py  detección de concentración, por percentil y estadística
-│   ├── features/           bloques de features: opciones / precio / volatilidad / régimen
-│   ├── strategies/         mean_reversion, momentum, volatility
-│   ├── backtest/           engine, execution, costs, portfolio
-│   ├── research/           exploratory, predictive_tests, robustness, placebo, walk_forward
-│   ├── models/             ml_models.py (Fase 14, condicionada a que el baseline tenga señal)
-│   └── visualization/      gex_plots, performance, diagnostics
-├── tests/                  suites autónomas, con verdad analítica
+│   ├── features/           VACÍO (Fase 7) — opciones / precio / volatilidad / régimen
+│   ├── strategies/         VACÍO (Fase 9) — mean_reversion, momentum, volatility
+│   ├── backtest/           VACÍO (Fases 10-12) — engine, execution, costs, portfolio
+│   ├── research/           VACÍO (Fases 7-13) — contrastes; NADIE del motor importa de aquí
+│   ├── models/             VACÍO (Fase 14, condicionada a que el baseline tenga señal)
+│   └── visualization/      VACÍO — gex_plots, performance, diagnostics
+├── research/               ORQUESTACIÓN, no motor. Scripts que leen `gamma_quant/` y escriben en `reports/`
+│   ├── probe_data_sources.py        qué vende de verdad cada fuente
+│   └── calibrate_from_bloomberg.py  reproduce el spot y la q de §4.1.d
+├── tests/                  suites autónomas, con verdad analítica. `python run_tests.py`
 ├── configs/                TOML; ningún número mágico en el código
-├── reports/                informes de calidad, registro de experimentos, informe final
-├── data/{raw,processed,archive}   fuera de git
+├── reports/                generado por máquina, FUERA DE GIT (calidad, bitácora, registro)
+├── data/
+│   ├── archive/            IRREEMPLAZABLE, fuera de git, necesita copia de seguridad propia
+│   ├── external/           ENTRADAS MANUALES, sí versionadas: los exports OMON del Terminal
+│   └── {raw,processed}/    fuera de git
 └── notebooks/
 ```
 
 **Código de investigación y código de producción separados:** `gamma_quant/` es importable,
 puro y testeado; `research/` orquesta y escribe en `reports/`. El motor nunca importa nada
 de `research/`.
+
+**Dos carpetas se llaman `research/` y no son lo mismo.** `gamma_quant/research/` será
+código de contraste importable (hoy vacío); `research/` en la raíz son *scripts* que se
+ejecutan. La regla de dependencia va en un solo sentido: los scripts importan el paquete,
+nunca al revés.
+
+**Los directorios marcados VACÍO tienen sólo un `__init__.py`.** Están creados para que la
+estructura no se improvise a mitad de camino, pero hoy no contienen nada: no los cuentes
+como hechos al leer el estado del proyecto.
 
 ### 2.1 Reglas de diseño
 
@@ -213,6 +233,69 @@ A4 y se **mide**, no se supone despreciable.
 - **yfinance** — subyacente diario (profundo), intradía 5m (60d) / 1h (~2a), VIX. Snapshot de
   cadena como contraste cruzado del de CBOE.
 
+### 4.1.b Alpha Vantage — PROBADO Y DESCARTADO EN GRATUITO (2026-09-01)
+
+Se consiguió clave gratuita y se probó contra el API real. Resultado:
+
+| Endpoint | Clave gratuita | Nota |
+|---|---|---|
+| `HISTORICAL_OPTIONS` | **NO** — *"This is a premium endpoint"* | Es exactamente lo que necesita el proyecto: cadena completa de una fecha pasada con OI, IV y griegas. Verificado con la clave `demo` sobre IBM: 998 contratos y el esquema canónico entero. Pero de pago |
+| `REALTIME_OPTIONS` | **NO, y engaña** | Devuelve HTTP 200 con `data` no vacío… de **contratos falsos**: `XXYYZZ999999C00020000`, vencimiento `2099-99-99`, más un aviso de que el esquema es artificial |
+| `TIME_SERIES_DAILY` | Sí | Subyacente. Redundante con yfinance |
+
+**La trampa de `REALTIME_OPTIONS` es la lección de diseño del día.** Un adaptador
+que valide con `if data:` ingiere contratos de mentira sin lanzar un solo error.
+`research/probe_data_sources.py` incorpora ahora `_looks_like_placeholder()` y
+aborta ante fechas imposibles o tickers de relleno. **Ninguna fuente se considera
+válida por devolver 200 con una lista dentro.**
+
+**Antes de pagar hay que verificar en qué plan entra `HISTORICAL_OPTIONS`.** El
+mensaje de `REALTIME_OPTIONS` menciona el plan de 600 req/min (199,99 $/mes), así
+que no está confirmado que el de 49,99 $ incluya opciones. Preguntar a soporte
+antes de suscribir, no después.
+
+### 4.1.c Bloomberg OMON — PROBADO (2026-09-01)
+
+Se recibieron tres exports XLSX de la pantalla OMON del Terminal. Resultado:
+
+**Lo bueno, y es más de lo esperado:**
+
+| Hallazgo | Detalle |
+|---|---|
+| **El histórico llega a 95 días** | El export "as of 29may" se **autoverifica**: sus grupos dicen `18-Jun-26 (20d)`, luego la fecha es 2026-05-29. La ventana documentada de Bloomberg son 90 días; sirvió 95 |
+| Trae **open interest y griegas** | `OInt`, `DL`, `GL`, `VL`, `TL` por contrato |
+| Publica **r y dividendo por vencimiento** | La cabecera de grupo trae `R 4.11` e `IDiv .71`. Deja de hacer falta *suponer* A6 |
+| Distingue SPX de SPXW | Recuperable de la raíz del ticker |
+
+**Lo malo, y es decisivo:** OMON exporta **lo que se ve en pantalla**, unos 150
+contratos de ~15 strikes. Una cadena completa de SPX son ~28.000. **Estos exports
+no son un panel de investigación** y una fecha por export manual no escala a las
+~250 sesiones que exige un backtest.
+
+**Para qué SÍ sirven, y es valioso:** calibrar y contrastar el motor.
+
+### 4.1.d CALIBRACIÓN CONTRA BLOOMBERG — el motor está validado
+
+Contrastando nuestra gamma BSM contra la `GL` de Bloomberg sobre 146 contratos
+reales de SPX:
+
+1. **`GL` de Bloomberg es gamma por movimiento del 1%, no por dólar.**
+   Ratio `GL/γ_BS` = 75,81 frente a `S×0,01` = 76,44. Usar `GL` cruda en el GEX
+   lo multiplica por ~76 **sin producir ningún error visible**.
+2. **Convertida, nuestra gamma coincide con la de Bloomberg: error mediano 1,25%**
+   (p90 8,8%). El motor está calibrado contra la referencia institucional.
+3. **Spot y dividendo recuperados de la propia cadena** por paridad put-call:
+   `F = K + (C−P)e^{rT}`, y `ln F = ln S + (r−q)T` sobre seis vencimientos.
+   Resultado: spot 7.643,58 y **q = 0,30%**.
+
+El punto 3 corrigió un error propio: yo había puesto `dividend_yield = 0.013`
+"porque es el dividendo típico del S&P". Estaba **cuatro veces alto**. La lección
+no es el número — es que existía un método para **medirlo** con datos ya
+disponibles en vez de suponerlo.
+
+Todo ello queda fijado en `tests/test_bloomberg_omon.py` (22 comprobaciones), que
+falla si alguien rompe las griegas o cambia r/q/tau sin darse cuenta.
+
 ### 4.2 Limitación intradía
 
 Las barras de 5 minutos sólo llegan 60 días atrás. **La investigación de 0DTE (§21 del
@@ -253,6 +336,44 @@ Cada uno explícito, configurable y, cuando se puede, contrastado. **Ninguno se 
 | **A5** | El OI utilizable hoy es el **publicado ayer** | `oi_lag_days=1` | El OCC publica el OI antes de la apertura siguiente. Usar el OI del mismo día es look-ahead. El lag es configurable y el caso sin lag se corre **sólo** para cuantificar cuánto infla |
 | **A6** | Tipo libre de riesgo plano por plazo | config | Se barre la sensibilidad; la gamma depende poco del tipo |
 | **A7** | La IV del proveedor es fiable | verificar | Se contrasta re-resolviendo la IV desde el mid |
+| **A8** | Al mover el spot para buscar el flip, cada strike conserva su IV | `sticky_strike` | `flip_sensitivity()` calcula el flip bajo las tres reglas |
+| **A9** | `tau` se mide en **horas reales** hasta las 16:00 ET, no en días de calendario | horas | **Medido 2026-09-01: cambiar a días de calendario mueve el GEX total un 22,5% (SPY) y un 17,2% (SPX)** |
+
+### A9 — la convención de `tau` es un supuesto de primer orden
+
+Descubierto al contrastar nuestra gamma contra la de CBOE sobre datos reales. La
+discrepancia mediana ponderada por GEX es del 3,3% (SPY) y 2,5% (SPX) — aceptable —
+**pero en 0DTE sube al 49% (SPY) y 15% (SPX)**.
+
+La causa no es un error: es que `gamma ~ 1/√T` diverge, así que en el último día
+de vida el valor de `tau` domina el resultado. Nosotros contamos horas reales
+hasta el cierre, que es lo económicamente correcto; CBOE usa una convención que
+no publica.
+
+Consecuencia para la investigación: **el 0DTE aporta el 6-9% del |GEX| bruto pero
+hasta el 50% del GEX neto de SPX**, y es justo donde el número es menos robusto.
+Cualquier resultado sobre 0DTE debe reportarse con la sensibilidad a A9 al lado.
+
+### El GEX neto es un residuo, y eso lo hace frágil
+
+Medido sobre SPX real el 2026-09-01:
+
+```
+calls   +261.893.991.358
+puts    -305.154.291.323
+neto     -43.260.299.965      <- el 14% del bruto
+```
+
+Las dos patas casi se cancelan, así que **un error del 3% en cualquiera de ellas
+mueve el neto un 20%**. Esto no es un problema de implementación: es una
+propiedad de la magnitud. Implica que:
+
+1. La precisión de la gamma importa mucho más de lo que sugiere su efecto sobre
+   una sola opción.
+2. Comparar niveles de GEX entre días exige que la convención no cambie **nunca**.
+3. Cualquier estrategia basada en el signo del GEX neto está operando sobre la
+   diferencia de dos números grandes, con todo lo que eso implica para la
+   relación señal/ruido.
 
 **A2 merece énfasis.** Toda construcción retail de GEX asume una convención de signo porque
 el inventario del dealer es privado. Si la convención está mal, el signo de la señal está

@@ -29,6 +29,13 @@ storage = ["pyarrow>=15"]
 # Subyacente diario/intradia y VIX.
 prices = ["yfinance>=0.2"]
 
+# Lectura de los exports XLSX de OMON. NO es opcional para la suite de
+# calibracion: sin openpyxl, `tests/test_bloomberg_omon.py` no puede abrir los
+# ficheros y se salta entero devolviendo 0, es decir, PASA sin comprobar nada.
+# Estaba instalado en la maquina de desarrollo pero sin declarar, que es la forma
+# habitual de que una prueba desaparezca al cambiar de entorno.
+bloomberg = ["openpyxl>=3.1"]
+
 # Graficos de investigacion.
 plots = ["matplotlib>=3.8", "seaborn>=0.13"]
 
@@ -41,6 +48,7 @@ ml = ["scikit-learn>=1.4"]
 all = [
     "pyarrow>=15",
     "yfinance>=0.2",
+    "openpyxl>=3.1",
     "matplotlib>=3.8",
     "seaborn>=0.13",
     "statsmodels>=0.14",

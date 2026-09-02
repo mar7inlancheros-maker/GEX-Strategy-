@@ -38,6 +38,13 @@ def get_logger(
     """
     logger = logging.getLogger(name)
     if name in _CONFIGURED:
+        # OJO: no basta con devolverlo. Si la PRIMERA llamada con este nombre vino
+        # sin `log_file` (un import cualquiera) y la segunda es la del archivador,
+        # salir aqui deja al archivador escribiendo solo a consola. En un proceso
+        # desatendido eso significa que el dia que falle no quedara rastro en
+        # disco, que es exactamente el fallo silencioso que este modulo existe
+        # para evitar. El handler a disco se añade aunque el logger ya estuviera.
+        _add_file_handler(logger, log_file)
         return logger
 
     logger.setLevel(level)
@@ -55,12 +62,25 @@ def get_logger(
     stream.setFormatter(formatter)
     logger.addHandler(stream)
 
-    if log_file is not None:
-        path = Path(log_file)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        file_handler = logging.FileHandler(path, encoding="utf-8", errors="replace")
-        file_handler.setFormatter(formatter)
-        logger.addHandler(file_handler)
+    _add_file_handler(logger, log_file)
 
     _CONFIGURED.add(name)
     return logger
+
+
+def _add_file_handler(logger: logging.Logger, log_file: str | Path | None) -> None:
+    """Añade un handler a disco, si no hay ya uno apuntando a ese fichero.
+
+    Idempotente a proposito: llamar dos veces a `get_logger` con el mismo
+    `log_file` no debe duplicar cada linea del log.
+    """
+    if log_file is None:
+        return
+    path = Path(log_file).resolve()
+    for h in logger.handlers:
+        if isinstance(h, logging.FileHandler) and Path(h.baseFilename) == path:
+            return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    file_handler = logging.FileHandler(path, encoding="utf-8", errors="replace")
+    file_handler.setFormatter(logging.Formatter(_FORMAT, datefmt=_DATEFMT))
+    logger.addHandler(file_handler)
