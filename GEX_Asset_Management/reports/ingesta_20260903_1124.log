@@ -1,0 +1,83 @@
+# ingesta extension4  2021-09-01 -> 2022-08-31  53 dias  inicio 11:24:29
+
+[equities] cierre y volumen del subyacente...
+  ERROR: BentoClientError: 422 data_start_before_available_start
+`start` in query ('2021-07-18 00:00:00+00:00') was before the available start of dataset EQUS.SUMMARY ('2024-07-01 00:00:00+00:00'). Try requesting with a later `start`.
+documentation: https://databento.com/docs/api-reference-historical/basics/datasets
+
+[calidad] 9 dias con calidad reducida segun Databento:
+    2021-09-06  missing
+    2021-11-25  missing
+    2021-12-24  missing
+    2022-01-17  missing
+    2022-02-21  missing
+    2022-04-15  missing
+    2022-05-30  missing
+    2022-06-20  missing
+    2022-07-04  missing
+    (se ingestan igual, quedan marcados para excluirlos en la puerta P2)
+
+[opciones] 45 dias por bajar, 4 en paralelo
+  fecha        con  2023-02-24      64,090    64,090   57,059   43,294    1  11.0%    20    2021-10-29      77,932    77,932   71,199   55,715    1   8.6%    22    18    25  
+  2021-11-05      79,958    79,958   73,452   57,837    1   8.1%    26    17    28  
+  2021-11-19      79,124    79,124   72,253   58,481    1   8.7%    24    30    26  
+  2021-11-12   2023-03-10      63,972    63,972   57,084   43,435    1  10.8%    25    2021-11-26      78,916    78,916   73,164   58,626    1   7.3%    26    15    61  MEDIA SESION: cotizaciones tomadas a las 13:00 ET
+  2021-12-03      76,908    76,908   72,224   59,568    1   6.1%    22    20    54  
+  2021-12-24           0         0        0        0    0   0.0%     0     0     0  ERROR BentoClientError: 422 symbology_invalid_request
+Could not resolve smart symbols: AAPL.OPT,MSFT.OPT,NVDA.OPT,AMD.OPT,AMZN.OPT,GOOGL.OPT,META.OPT,TSLA.OPT,NFLX.OPT,JPM.OPT,BAC.OPT,XOM.OPT,CVX.OPT,DIS.OPT,BA.OPT,WMT.OPT,KO.OPT,PG.OPT,PLTR.OPT,COIN.OPT,MSTR.OPT,GME.OPT,RIVN.OPT,SOFI.OPT,UBER.OPT,SHOP.OPT,MU.OPT,CRM.OPT,GS.OPT,CAT.OPT,SPY.OPT,QQQ.OPT
+documentation: https://databento.com/docs/api-re  2023-03-31      64,392 1,003,296   57,511   44,105   16  10.0%    30    38    45  
+  2023-04-28      65,102 1,024,992   58,037   44,232   16  10.2%    22    38    41  
+  2023-04-21      64,454 1,011,936   57,341   43,478   16  10.4%    21    25    86  
+  2023-04-14      65,168 1,003,424    2022-01-21      76,460    76,460   70,076   57,  2023-05-05      65,122 1,016,224   57,736   43,842   16  10.6%    53    39    34  
+  2023-05-12      64,074 1,006,816   56,817   43,962   16  10.7%    26    57    36  
+  2023-05-26      65,418 1,002,368    2022-02-04      81,054    81,054   75,172   60,351    1   7.3%    30    38    43  
+  2022-01-28      82,182    82,182   76,264   59,886    1   7.2%    46    39    78  
+  2022-02-18      77,412    77,412   70,731   57,  2023-06-23      64,692 1,010,720   57,891   45,395   16   9.8%    17    50    25  
+  2023-06-09      68,364 1,061,728    2022-03-04      76,906    76,906   70,688   56,573    1   8.1%    33    21    31  
+  2022-02-25      78,576    78,576   72,314   57,644    1   8.0%    37    30    33  
+  2022-03-11      78,248    78,248   71,952   57,054    1   8.0%    44    50    33  
+  ... 20/45 · 9.3  2023-07-07      69,372 1,080,000   62,094   46,820   16   9.8%    25    34    58  
+  2023-07-14      71,396 1,091,424   64,199   48,805   16   9.5%    26    48    32  
+  2023-07-21      70,936 1,116,928   63,648   50,301   16   9.6%    26    45    41  
+  2023-07-28      71,816 1,085,984   64,374   49,305   16   9.7%    26    45    41  
+  2023-08-11      71,348 1,114,304   63,346   48,919   16  10.6%    24    39    54  
+  2023-08-04      71,950 1,109,120   64,421   49,509   16   9.9%    22    46   102  
+  2023-08-18      69,792 1,095,392   61,995   47,344   16  10.5%    31    48    86  
+  2023-08-25      69,616 1,097,792   61,444   47,152   16  11.1%    42    43    56  
+  2023-08-31      67,490 1,047,520   60,388   46,273   16   9.8%    50    31    32  
+  ... 30/30 · 14.3 min transcurridos · faltan ~0 min
+
+[feriados] 1 semanas sin datos en su ultimo dia habil; probando dias anteriores
+  semana 2023-W14 resuelta con 2023-04-06  (42,986 contratos)
+
+# fin 11:39:59  ·  30 dias OK  ·  1 con error
+# duracion total 15.7 min
+# log: /Users/sant/Finance2026/GEX PROJECT /reports/ingesta_20260903_1124.log
+5,930    1   8.3%    19    33    78  
+  2022-05-20      76,464    76,464   68,940   54,514    1   9.8%    30    36    53  
+  2022-05-27      77,998    77,998   70,792   54,805    1   9.2%    44    23    63  
+  2022-05-13      77,824    77,824   70,641   54,863    1   9.2%   101    31    59  
+  2022-06-03      76,242    76,242   69,303   53,870    1   9.1%    30    25    49  
+  2022-06-10      76,658    76,658   69,365   55,046    1   9.5%    17    46    72  
+  2022-06-17      76,548    76,548   68,691   54,680    1  10.3%    25    24    57  
+  2022-07-01      73,228    73,228   65,841   51,250    1  10.1%    25    38    47  
+  2022-06-24      74,506    74,506   67,897   53,401    1   8.9%    23    33    63  
+  2022-07-08      71,826    71,826   65,105   51,254    1   9.4%    49    49    35  
+  2022-07-15      72,168    72,168   65,138   51,266    1   9.7%    18    63    57  
+  2022-07-22      71,914    71,914   65,973   51,127    1   8.3%    18    75    49  
+  2022-07-29      72,880    72,880   66,201   52,209    1   9.2%    59    29    56  
+  ... 40/45 · 18.7 min transcurridos · faltan ~2 min
+  2022-08-05      73,510    73,510   66,847   53,226    1   9.1%    16    23    63  
+  2022-08-26      70,008    70,008   62,966   49,968    1  10.1%    17    21    24  
+  2022-08-12      71,610    71,610   64,750   52,966    1   9.6%    36    35    67  
+  2022-08-19      69,614    69,614   62,747   51,390    1   9.9%    25    24    73  
+  2022-08-31      66,284    66,284   60,442   49,406    1   8.8%    30    24    44  
+  ... 45/45 · 21.3 min transcurridos · faltan ~0 min
+
+[feriados] 2 semanas sin datos en su ultimo dia habil; probando dias anteriores
+  semana 2021-W51 resuelta con 2021-12-23  (54,744 contratos)
+  semana 2022-W15 resuelta con 2022-04-14  (53,263 contratos)
+
+# fin 11:48:44  ·  45 dias OK  ·  2 con error
+# duracion total 24.2 min
+# log: /Users/sant/Finance2026/GEX PROJECT /reports/ingesta_20260903_1124.log

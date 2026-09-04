@@ -1,0 +1,78 @@
+# ingesta extension2  2023-09-01 -> 2024-08-31  53 dias  inicio 21:52:20
+
+[equities] cierre y volumen del subyacente...
+  ERROR: BentoClientError: 422 data_start_before_available_start
+`start` in query ('2023-07-18 00:00:00+00:00') was before the available start of dataset EQUS.SUMMARY ('2024-07-01 00:00:00+00:00'). Try requesting with a later `start`.
+documentation: https://databento.com/docs/api-reference-historical/basics/datasets
+
+[calidad] 1 dias con calidad reducida segun Databento:
+    2024-06-03  degraded
+    (se ingestan igual, quedan marcados para excluirlos en la puerta P2)
+
+[opciones] 53 dias por bajar, 4 en paralelo
+  fecha        contratos        OI   quotes   unidos  pub  desc%   def    oi  cbbo  notas
+  2023-09-08      68,958 1,075,776   60,552   45,832   16  11.5%    25    39    44  
+  2023-09-15      69,394 1,106,912   60,845   46,331   16  11.7%    18    36    59  
+  2023-09-01      69,896 1,071,584   61,345   46,330   16  11.6%    33    49    58  
+  2023-09-22      69,982 1,093,952   61,645   45,909   16  11.3%    28    41    75  
+  2023-09-29      72,368 1,121,728   63,930   46,348   16  11.0%    43    46    47  
+  2023-10-13      72,234 1,101,922   64,441   47,153   16  10.1%    34    43    38  publishers/contrato varia: 16-17
+  2023-10-06      71,578 1,126,384   63,554   46,787   16  10.6%    32    60    52  publishers/contrato varia: 16-17
+  2023-10-20      69,050 1,085,738   61,273   46,412   16  10.6%    18    49    56  publishers/contrato varia: 16-17
+  2023-10-27      72,644 1,131,202   64,189   47,422   16  11.0%    25    49    45  publishers/contrato varia: 16-17
+  2023-11-10      71,634 1,121,288   62,476   46,778   16  12.1%    20    48    53  publishers/contrato varia: 16-17
+  2023-11-03      72,354 1,122,588   63,638   46,857   16  11.4%    18    50    58  publishers/contrato varia: 16-17
+  2023-11-17      69,018 1,109,106   60,260   46,755   16  12.0%    23    44    50  publishers/contrato varia: 16-17
+  2023-12-01      70,896 1,109,542   61,983   47,100   16  12.0%    16    38    34  publishers/contrato varia: 16-17
+  2023-12-15      71,108 1,124,760   62,169   47,936   16  12.0%    30    31    27  publishers/contrato varia: 16-17
+  2023-11-24      71,384 1,078,618   62,272   46,443   16  11.9%    26    43    60  publishers/contrato varia: 16-17; MEDIA SESION: cotizaciones tomadas a las 13:00 ET
+  2023-12-08      71,542 1,129,686   62,470   47,634   16  12.1%    25    37    51  publishers/contrato varia: 16-17
+  2023-12-22      71,862 1,143,698   63,112   47,937   16  11.5%    18    43    39  publishers/contrato varia: 16-17
+  2023-12-29      74,508 1,139,444   65,508   47,817   16  11.5%    33    32    41  publishers/contrato varia: 16-17
+  2024-01-12      78,536 1,255,646   69,491   50,250   17  11.0%    29    37    59  publishers/contrato varia: 16-17
+  2024-01-05      74,904 1,208,502   65,913   48,619   17  11.4%    34    31    63  publishers/contrato varia: 16-17
+  ... 20/53 · 10.3 min transcurridos · faltan ~17 min
+  2024-01-19      75,050 1,230,914   66,433   50,440   17  10.9%    14    55    65  publishers/contrato varia: 16-17
+  2024-01-26      77,816 1,247,590   69,985   52,111   17   9.5%    37    51    44  publishers/contrato varia: 16-17
+  2024-02-09      82,346 1,319,446   74,349   54,808   17   9.0%    17    45    40  publishers/contrato varia: 16-17
+  2024-02-02      77,344 1,266,882   69,470   52,555   17   9.6%    19    46    46  publishers/contrato varia: 16-17
+  2024-02-23      83,232 1,360,766   75,144   56,361   17   9.2%    30    26    42  publishers/contrato varia: 16-17
+  2024-03-08      88,008 1,436,976   79,734   60,373   17   8.9%    16    52    33  
+  2024-03-01      85,710 1,406,104   77,159   57,527   17   9.3%    27    70    32  
+  2024-03-29           0         0        0        0    0   0.0%     0     0     0  ERROR BentoClientError: 422 symbology_invalid_request
+Could not resolve smart symbols: AAPL.OPT,MSFT.OPT,NVDA.OPT,AMD.OPT,AMZN.OPT,GOOGL.OPT,META.OPT,TSLA.OPT,NFLX.OPT,JPM.OPT,BAC.OPT,XOM.OPT,CVX.OPT,DIS.OPT,BA.OPT,WMT.OPT,KO.OPT,PG.OPT,PLTR.OPT,COIN.OPT,MSTR.OPT,GME.OPT,RIVN.OPT,SOFI.OPT,UBER.OPT,SHOP.OPT,MU.OPT,CRM.OPT,GS.OPT,CAT.OPT,SPY.OPT,QQQ.OPT
+documentation: https://databento.com/docs/api-reference-historical/basics/symbology
+  2024-02-16      79,802 1,321,238   72,395   56,178   17   8.7%    38    65    66  publishers/contrato varia: 16-17
+  2024-03-15      87,298 1,471,656   79,096   61,643   17   8.9%    25    43    50  
+  2024-03-22      87,858 1,438,506   79,303   60,779   17   9.2%    32    36    71  
+  2024-04-05      90,248 1,488,112   82,145   61,979   17   8.5%    27    37    63  
+  2024-04-12      89,584 1,487,398   81,563   61,869   17   7.2%    20    36    71  
+  2024-04-19      85,758 1,455,268   77,998   60,906   17   8.5%    41    35    66  
+  2024-04-26      86,378 1,436,296   78,406   59,919   17   7.4%    30    47    56  
+  2024-05-10      87,116 1,441,736   78,597   59,129   17   9.3%    31    43    39  
+  2024-05-03      86,624 1,440,852   77,861   58,738   17   9.7%    22    48    81  
+  2024-05-17      84,936 1,434,630   76,783   59,871   17   9.1%    20    38    52  
+  2024-05-24      85,354 1,422,186   77,199   59,369   17   9.0%    25    31    56  
+  2024-06-07      86,248 1,427,592   78,237   59,750   17   8.8%    28    51    36  
+  ... 40/53 · 20.8 min transcurridos · faltan ~7 min
+  2024-05-31      86,130 1,433,202   77,965   59,181   17   9.0%    51    38    58  
+  2024-06-14      86,254 1,424,770   77,741   59,522   17   7.7%    25    24    46  
+  2024-06-21      81,840 1,385,568   73,642   58,351   17   9.5%    20    35    43  
+  2024-06-28      81,292 1,355,104   73,824   57,429   17   8.7%    24    29    26  
+  2024-07-05      82,108 1,346,808   75,068   57,011   17   8.1%    17    37    39  
+  2024-07-12      84,290 1,402,432   76,860   59,259   17   8.3%    27    35    57  
+  2024-07-26      80,612 1,337,084   74,183   58,266   17   7.5%    21    31    42  
+  2024-08-02      82,294 1,372,274   75,655   58,741   17   7.5%    26    29    41  
+  2024-07-19      81,764 1,387,302   75,088   60,040   17   7.6%    23    49    72  
+  2024-08-16      82,302 1,396,856   74,687   58,923   17   8.4%    19    36    52  
+  2024-08-09      87,698 1,443,096   79,768   60,121   17   8.3%    45    31    73  
+  2024-08-30      80,214 1,355,366   73,223   57,944   17   8.1%    25    44    43  publishers/contrato varia: 17-18
+  2024-08-23      82,002 1,369,692   75,303   58,697   17   7.5%    26    56    42  publishers/contrato varia: 17-18
+  ... 53/53 · 26.2 min transcurridos · faltan ~0 min
+
+[feriados] 1 semanas sin datos en su ultimo dia habil; probando dias anteriores
+  semana 2024-W13 resuelta con 2024-03-28  (60,746 contratos)
+
+# fin 22:19:40  ·  53 dias OK  ·  1 con error
+# duracion total 27.3 min
+# log: /Users/sant/Finance2026/GEX PROJECT /reports/ingesta_20260902_2152.log
