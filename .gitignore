@@ -51,6 +51,20 @@ reports/*.html
 reports/*.log
 reports/*.json
 reports/*.jsonl
+reports/*.txt
+
+# OJO CON EL ANCLAJE. Todas las reglas de arriba llevan barra, asi que valen
+# SOLO para el `reports/` de la raiz. Es deliberado: `GEX_Asset_Management/reports/`
+# tiene la politica CONTRARIA -- ahi los .txt son la EVIDENCIA de las corridas
+# (docs/RESULTADOS.md los cita) y se versionan a proposito. Dos carpetas con el
+# mismo nombre y politicas opuestas: si alguien "unifica" estas reglas sin leer
+# esto, borra del repo el resultado de cinco años de muestra.
+
+# --- SUBPROYECTO GEX_Asset_Management ---
+# Su pipeline (Databento OPRA + polars) escribe en su propio `data/`: 15,6 millones
+# de contrato-dia. No cabe en git y se regenera con `run_ingesta.py`. Se ignora por
+# CARPETA y no por extension, porque `*.parquet` solo salva del formato de hoy.
+GEX_Asset_Management/data/
 
 # Credenciales
 .env

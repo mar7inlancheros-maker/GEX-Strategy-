@@ -2,11 +2,79 @@
 
 **Proyecto:** `gamma_quant`
 **Inicio:** 31 de agosto de 2026
-**Estado:** Fase 1 cerrada (auditoría de entorno y datos). Fases 2–6 construibles ya. Fases 7–15 **bloqueadas por datos**.
+**Estado:** ⛔ **DETENIDO el 2026-09-04.** La hipótesis ya fue contrastada sobre datos reales
+en `GEX_Asset_Management/` y **no se sostiene**. Ver §0.0.
 
 ---
 
-## 0. LO PRIMERO, Y LO INCÓMODO
+## 0.0 CORRECCIÓN — LA PREMISA DE ESTE PLAN ERA FALSA (2026-09-04)
+
+> **Todo lo escrito debajo del §0.0 se redactó creyendo dos cosas que resultaron
+> falsas. Se conserva sin editar, porque tachar lo que uno creía es la forma
+> rápida de repetirlo.**
+
+**Falso nº 1 — "no tenemos histórico de opciones".** El repositorio contiene
+`GEX_Asset_Management/`, un proyecto de investigación GEX **terminado**, con
+**15.617.846 contrato-día de cadena OPRA** (Databento), muestra 2021-09 → 2026-08,
+267 fechas semanales sobre 30 acciones más SPY y QQQ. Yo audité el directorio de
+trabajo el 31 de agosto y estaba vacío; no volví a mirar el repo al aparecer
+código nuevo. **La auditoría de entorno hay que rehacerla cuando el entorno
+cambia, no una sola vez al principio.**
+
+**Falso nº 2 — "la pregunta sigue abierta".** No lo está. Ese proyecto contrastó
+las hipótesis de este encargo con pre-registro, placebos y datos reales:
+
+| Hipótesis (de este encargo) | Test | Resultado |
+|---|---|---|
+| GEX positivo → reversión / negativo → momentum (§1, §11-13) | `run_regimen.py`, 267 semanas | **NO RESPALDADA.** Fallan 4 de 5 criterios. La estrategia queda en el **percentil 58 de barajados aleatorios** del vector de régimen |
+| GEX → volatilidad realizada (§14, §15) | `run_vrp.py` | **Signo invertido.** Spread Q0−Q4 = −0,0296, t = −0,98 |
+| Mecanismo de cobertura (§1) | `run_mecanismo_fm.py` | Significativo sin controles (t = −2,37); **desaparece al controlar por IV** (t = +0,08) |
+| GEX intradía / 0DTE (§21) | `run_intradia.py` | **Fallan 5 de 5.** Y el placebo invertido **rinde mejor** que la señal real |
+
+### El hallazgo que invalida el enfoque, y que este plan no vio
+
+La gamma de Black-Scholes es `φ(d1) / (S·σ·√T)`. Lleva **1/σ dentro**. Por tanto
+**cualquier** GEX construido con gamma BSM es una función decreciente de la
+volatilidad implícita *por construcción*, no por economía. Medido:
+
+```
+corr(Γ, 1/IV) = +0,573        corr(Γ, IV) = −0,442
+```
+
+Como la IV es persistente y predice la volatilidad realizada, el GEX "predice"
+volatilidad **tautológicamente**. Al ortogonalizar Γ contra IV, el poder
+predictivo pasa de t = −2,48 a **t = +0,04**.
+
+**Esto indicta el motor de `gamma_quant/` directamente.** Construí cuatro
+definiciones de GEX y un marco de placebos para la *convención de signo* (A1/A2),
+convencido de que ahí estaba la fragilidad. El confundidor real estaba un nivel
+más abajo, **dentro de la gamma**, y no aparece en el registro de supuestos de
+este documento. El placebo que hacía falta no era invertir el signo: era
+**ortogonalizar contra la IV**, y no se me ocurrió.
+
+### Qué se salva de `gamma_quant/`
+
+Instrumentos correctos y testeados (234 comprobaciones), para una pregunta ya
+cerrada:
+
+- Motor BSM **calibrado contra Bloomberg** (error mediano 1,25% sobre SPX real).
+- Lector de exports OMON con recuperación de spot y dividendo por paridad put-call.
+- Gamma flip **revalorando la cadena entera** — el atajo de interpolar el perfil
+  por strike da 101,00 donde lo correcto es 102,06.
+- Muros de gamma con umbral explícito y agrupación de contiguos.
+
+Nada de esto vale como estrategia. Vale como instrumental, y su sitio natural es
+`GEX_Asset_Management/`, no un segundo proyecto en paralelo.
+
+### Recomendación
+
+**No seguir construyendo `gamma_quant/` como aparato paralelo.** Duplica un
+proyecto más avanzado y re-testea una hipótesis con respuesta conocida y
+negativa. Ver §14 para las tres opciones y la única pregunta que sigue abierta.
+
+---
+
+## 0. LO PRIMERO, Y LO INCÓMODO  *(escrito el 31-08; premisa refutada, ver §0.0)*
 
 > **Hoy no podemos responder a la pregunta de investigación, y ninguna cantidad de código lo cambia.**
 
@@ -147,7 +215,13 @@ GEX Strategy/
 │   ├── archive/            IRREEMPLAZABLE, fuera de git, necesita copia de seguridad propia
 │   ├── external/           ENTRADAS MANUALES, sí versionadas: los exports OMON del Terminal
 │   └── {raw,processed}/    fuera de git
-└── notebooks/
+├── notebooks/
+└── GEX_Asset_Management/   OTRA LÍNEA DE TRABAJO — ni una línea de código en común
+    ├── gex/                señal Γ de Soebhag (2023) sobre acciones; Databento OPRA + polars
+    ├── docs/               FICHA_ESTRATEGIA, RESULTADOS, preregistros congelados
+    ├── reports/            EVIDENCIA de las corridas. SÍ se versiona (al revés que `reports/` de la raíz)
+    ├── run_*.py            ~20 entradas, una por test
+    └── requirements.txt    entorno propio: databento, polars, numba
 ```
 
 **Código de investigación y código de producción separados:** `gamma_quant/` es importable,
@@ -158,6 +232,26 @@ de `research/`.
 código de contraste importable (hoy vacío); `research/` en la raíz son *scripts* que se
 ejecutan. La regla de dependencia va en un solo sentido: los scripts importan el paquete,
 nunca al revés.
+
+**`GEX_Asset_Management/` entró en el repo el 2026-09-03 (PR #2) y es lo que invalidó
+la premisa de este documento — ver §0.0.** Es un proyecto con otro paper (Soebhag 2023),
+otro universo (30 mega-caps, no índice), otra fuente (Databento OPRA) y otro stack
+(polars, numba). No comparte una línea de código con `gamma_quant/`, pero **sí comparte
+la pregunta**, y ya la respondió sobre datos reales: el mecanismo no se confirma.
+
+Este árbol se describe aquí por una razón práctica: mientras la decisión de §14 siga
+pendiente, los dos conviven en un repositorio y hay dos sitios donde es fácil
+equivocarse.
+
+1. **Dos carpetas `reports/` con políticas opuestas.** La de la raíz la escribe una
+   máquina y está fuera de git. La de `GEX_Asset_Management/` **es la evidencia** de
+   las corridas, la citan sus `docs/RESULTADOS.md`, y se versiona a propósito.
+2. **Dos entornos de dependencias**, `pyproject.toml` y `requirements.txt`, que no se
+   solapan (`databento`, `polars` y `numba` sólo están en el segundo).
+
+El único punto de contacto en código es `research/gamma_iv_mechanics.py`, que usa
+nuestro motor para explicar en forma cerrada la anomalía de signo de
+`GEX_Asset_Management/reports/ortogonal.txt`. La dependencia va en un solo sentido.
 
 **Los directorios marcados VACÍO tienen sólo un `__init__.py`.** Están creados para que la
 estructura no se improvise a mitad de camino, pero hoy no contienen nada: no los cuentes
@@ -525,9 +619,96 @@ son lo que haría inmediatamente utilizable una compra posterior de histórico.
 
 ---
 
-## 13. PRÓXIMAS ACCIONES
+## 13. PRÓXIMAS ACCIONES  *(obsoleto, ver §14)*
 
 1. ~~Instalar `pyarrow`~~ — hecho (25.0.1).
 2. Construir las fases 2–6.
 3. **Arrancar el archivador de CBOE hoy** — sin coste, y la muestra sólo crece.
 4. Programar la ejecución diaria y vigilar los huecos.
+
+---
+
+## 14. DECISIÓN PENDIENTE (2026-09-04)
+
+Tres caminos. El primero es el recomendado.
+
+### (A) Absorber el instrumental y cerrar `gamma_quant/` — recomendado
+
+Llevar a `GEX_Asset_Management/` las cuatro piezas que allí no existen (calibración
+contra Bloomberg, gamma flip por revaloración, muros, lector OMON) y archivar el
+resto. Coste bajo, sin duplicación, y el proyecto que sobrevive es el que tiene
+datos.
+
+### (B) Re-enfocar sobre lo único que quedó abierto
+
+De los siete contrastes, seis se cierran limpiamente. El séptimo tiene una grieta
+que el propio informe señala:
+
+> El componente **`slow` (>31 días)** — donde el paper dice que vive la señal —
+> **sobrevive a la ortogonalización**: t = −6,52 crudo, **t = −2,66 ortogonalizado**,
+> con `fast` nulo (t = −0,22), justo como predice la teoría. Pero el componente OTM
+> sale con **signo contrario** al predicho (t = +4,24), *"lo que sugiere un problema
+> en la descomposición"*.
+
+**Investigado el 2026-09-04** → `research/gamma_iv_mechanics.py`,
+`reports/gamma_iv_mechanics.txt`. Resultado:
+
+**Establecido con certeza matemática.** La elasticidad de la gamma respecto a la
+volatilidad tiene forma cerrada y se verificó numéricamente (error 1e-3):
+
+```
+d ln(Γ) / d ln(σ)  =  d₁·d₂ − 1
+```
+
+En una cadena real recorre de **−1** en el dinero a **+6** en las alas, **cambiando
+de signo**. El cruce está en `d₁d₂ = 1` y su posición depende de `σ√T`, así que se
+mueve con el plazo.
+
+**La consecuencia metodológica, que es lo que importa:** si el confundidor es no
+lineal y cambia de signo según moneyness y plazo, **ortogonalizar linealmente
+contra una sola IV (la mediana de la cadena) no puede eliminarlo**. Queda residuo
+mecánico por construcción.
+
+Eso *no* toca el veredicto principal — la caída de t = −2,48 a t = +0,04 en la
+Gamma cruda es real. Sí pone en duda al **único superviviente**: sobrevivir a una
+limpieza incompleta no es evidencia de canal económico.
+
+**Lo que NO quedó demostrado.** La hipótesis de que el signo invertido del cubo OTM
+(+4,24) se explicara enteramente por este mecanismo **se reproduce sólo a medias**:
+ATM slow coincide (−0,92 vs t = −3,63), OTM fast da signo compatible (+3,04), pero
+OTM slow sale −0,38 y **no** reproduce el +4,24. Con pesos de OI sintéticos no se
+puede cerrar. La anomalía **sigue sin explicar del todo**.
+
+**El contraste que lo zanjaría** (necesita el panel OPRA real, ~2 h de trabajo):
+
+1. Ortogonalizar contra la IV **emparejada al plazo** de cada cubo y en forma **no
+   lineal**: controles `1/σ` y `1/(σ√T)`, no `σ` a secas.
+2. Rehacer la descomposición por moneyness usando **`d₁d₂ = 1` como frontera** en
+   lugar de `|ln(S/K)| = 0,10`. La frontera relevante es donde cambia el signo de
+   la elasticidad, no un número redondo.
+3. Si `slow` muere ahí, la conclusión pasa de *"un superviviente sin explicar"* a
+   **"nada sobrevive"**, que es una conclusión más fuerte y publicable.
+
+Apuesta previa: morirá. En el test de prima de varianza — el más limpio, porque
+restar la IV elimina el artefacto por construcción — `slow` **ya muere** (t = −1,06).
+
+Y hay que recordar que se probaron siete hipótesis sobre la misma muestra (§6 de
+RESULTADOS ya avisa: ~30% de probabilidad de al menos un falso positivo).
+
+### (C) Cambiar de pregunta
+
+El resultado consistente en los cinco años **no** es direccional: es la reducción
+de drawdown (−18,17% frente a −24,80% de SPY, y 35 semanas de recuperación frente
+a 106). Γ se comporta como **indicador de fragilidad**, no de dirección. Convertir
+eso en un producto de gestión de riesgo es una pregunta distinta de la de este
+encargo, y bastante mejor respaldada por la evidencia.
+
+### Lo que NO se debe hacer
+
+- Reconstruir el backtest de GEX direccional con otra parametrización. La
+  respuesta ya se buscó con pre-registro y placebos.
+- Seguir el archivador de CBOE **como vía principal**. Tenía sentido cuando se
+  creía que no había histórico; con 15,6 M de contrato-día ya ingestados, aporta
+  poco.
+- Citar cualquier cifra de `gamma_quant/` como evidencia de mercado. Todo lo
+  corrido allí es sintético o una muestra de 154 contratos de OMON.

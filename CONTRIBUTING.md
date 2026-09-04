@@ -26,15 +26,15 @@ Usa el mismo correo con el que tienes tu cuenta de GitHub.
 Elige una carpeta en tu computadora (fuera de OneDrive, para evitar conflictos de sincronización) y corre:
 
 ```bash
-git clone https://github.com/mar7inlancheros-maker/Asset-Management-.git
-cd Asset-Management-
+git clone https://github.com/mar7inlancheros-maker/GEX-Strategy-.git
+cd GEX-Strategy-
 ```
 
-Esto te descarga todo el proyecto. Ábrelo en VS Code (`File → Open Folder...`, selecciona la carpeta `Asset-Management-`).
+Esto te descarga todo el proyecto. Ábrelo en VS Code (`File → Open Folder...`, selecciona la carpeta `GEX-Strategy-`).
 
 ### 4. Crea tu archivo de configuración local
 
-Copia `.env.example` y renómbralo a `.env`. Rellena tus propios valores (por ejemplo tu correo real para el User-Agent que exige la SEC). Este archivo **nunca se sube a GitHub** — es solo tuyo, en tu computadora.
+Copia `.env.example` y renómbralo a `.env`. Rellena tus propios valores — hoy sólo hace falta `GAMMA_QUANT_USER_AGENT`, el contacto con el que el archivador se identifica ante el endpoint gratuito de CBOE. Ninguna clave de API es obligatoria. Este archivo **nunca se sube a GitHub** — es solo tuyo, en tu computadora.
 
 ---
 
@@ -127,7 +127,7 @@ git push
 Después del `push`, la terminal normalmente te muestra un link como:
 
 ```
-https://github.com/mar7inlancheros-maker/Asset-Management-/pull/new/feature/nombre-descriptivo
+https://github.com/mar7inlancheros-maker/GEX-Strategy-/pull/new/feature/nombre-descriptivo
 ```
 
 Cópialo y pégalo en tu navegador. Si no te salió el link, ve a la página del repositorio en GitHub — va a aparecer un aviso con un botón **"Compare & pull request"**.
