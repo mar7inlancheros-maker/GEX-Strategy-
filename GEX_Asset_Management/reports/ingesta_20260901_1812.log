@@ -1,0 +1,14 @@
+# ingesta pilot  2025-09-02 -> 2026-08-31  3 dias  inicio 18:13:17
+
+[equities] cierre y volumen del subyacente...
+  8,032 filas guardadas en equities/daily_pilot.parquet
+
+[opciones] 3 dias
+  fecha        contratos        OI   quotes   unidos  pub  desc%    seg  notas
+  2025-09-02      85,756 1,538,244   75,019   59,643   18  11.7%  187.9  
+  2025-09-03      85,698 1,536,984   74,134   59,243   18  12.5%  124.0  
+  2025-09-04      89,034 1,535,904   76,918   59,432   18  12.8%  142.3  
+
+# fin 18:20:58  ·  3 dias OK  ·  0 con error
+# duracion total 7.6 min
+# log: /Users/sant/Finance2026/GEX PROJECT /reports/ingesta_20260901_1812.log
