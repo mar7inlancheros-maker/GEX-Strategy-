@@ -1,0 +1,58 @@
+========================================================================================
+                       FASE 0.C -- LOCALIZACION DEL OPEN INTEREST                       
+                     2026-09-01 17:35  ·  dia de muestra 2026-06-10                     
+========================================================================================
+
+----------------------------------------------------------------------------------------
+1. COSTO POR VENTANA  (con guarda: una ventana vacia no es barata)
+----------------------------------------------------------------------------------------
+    ventana                                 registros/dia   costo/dia     x250 dias
+    -------------------------------------------------------------------------------
+    dia completo                                9,343,464       $6.13     $1,531.51
+    manana  10:00-12:00 UTC (06-08 ET)          2,102,184       $1.38       $344.57
+    tarde   20:00-22:00 UTC (16-18 ET)          7,241,280       $4.75     $1,186.94
+
+----------------------------------------------------------------------------------------
+2. CONTENIDO REAL DE CADA VENTANA  (descarga minima)
+----------------------------------------------------------------------------------------
+    Se descargan las 2 ventanas para AAPL.OPT, 1 dia. Costo estimado ~$0.10-0.30.
+
+    >>> manana  10:00-12:00 UTC (06-08 ET)
+        registros: 65,700   columnas: ts_event, rtype, publisher_id, instrument_id, ts_ref, price, quantity, sequence, ts_in_delta, stat_type, channel_id, update_action
+         stat_type  nombre                      registros  contratos   primer ts             
+                 9  open_interest                  65,700      3,650   2026-06-10 10:30:00     <== OPEN INTEREST
+
+        OPEN INTEREST ENCONTRADO AQUI: 65,700 registros, 3,650 contratos distintos
+        ventana horaria real: 2026-06-10 10:30:00 -> 2026-06-10 10:30:41
+        OI: min=0  mediana=109  max=91,181  suma=97,290,396
+
+    >>> tarde   20:00-22:00 UTC (16-18 ET)
+        registros: 228,272   columnas: ts_event, rtype, publisher_id, instrument_id, ts_ref, price, quantity, sequence, ts_in_delta, stat_type, channel_id, update_action
+         stat_type  nombre                      registros  contratos   primer ts             
+                 1  opening_price                  28,534      3,712   2026-06-10 20:40:00   
+                 4  trading_session_low_price      28,534      3,712   2026-06-10 20:40:00   
+                 5  trading_session_high_price     28,534      3,712   2026-06-10 20:40:00   
+                 6  cleared_volume                 28,534      3,712   2026-06-10 20:40:00   
+                 7  lowest_offer                   28,534      3,712   2026-06-10 20:40:00   
+                 8  highest_bid                    28,534      3,712   2026-06-10 20:40:00   
+                11  close_price                    28,534      3,712   2026-06-10 20:40:00   
+                12  net_change                     28,534      3,712   2026-06-10 20:40:00   
+
+========================================================================================
+3. VEREDICTO Y COSTO REPROYECTADO
+========================================================================================
+    El open interest vive en: manana  10:00-12:00 UTC (06-08 ET)
+    (65,700 registros sobre 3,650 contratos de AAPL)
+
+    Costo con la ventana correcta: $344.57/ano
+    Costo pidiendo el dia completo: $1,531.51/ano
+    Ahorro: 4.4x
+
+    alcance                           meses  definition  statistics    quotes       TOTAL
+    -------------------------------------------------------------------------------------
+    Piloto: 1 ano                        12         $44        $345       $56        $445
+    Medio: 2024-07 -> hoy                26         $97        $758      $124        $980
+    Completo: 2018-05 -> hoy            100        $368      $2,860      $468      $3,696
+
+    Salida guardada en: /Users/sant/Finance2026/GEX PROJECT /reports/fase0c_open_interest.txt
+========================================================================================

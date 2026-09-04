@@ -1,0 +1,50 @@
+================================================================================================
+              GEX DE INDICE COMO SWITCH MOMENTUM / REVERSAL -- test pre-registrado              
+                     267 fechas semanales · umbral z +-0.5 · ventana 26 sem                     
+================================================================================================
+
+regimen: 87 sem corto gamma · 100 sem largo gamma · 80 neutral
+G(SPY+QQQ): media -0.107  ·  siempre negativo: False
+
+------------------------------------------------------------------------------------------------
+RESULTADOS -- retorno semanal, neto de 5 bps por lado
+------------------------------------------------------------------------------------------------
+  estrategia                               ret anual     vol  Sharpe   max DD   t (NW)
+  ------------------------------------------------------------------------------------
+  A. GEX-switch (mom si corto, rev si largo)    -5.36%   34.2%   -0.10   -75.1%     0.01
+  B. momentum incondicional                  -20.43%   39.4%   -0.47   -83.4%    -0.73
+  C. reversal incondicional                   -4.13%   39.4%   -0.01   -62.0%     0.16
+  D. GEX-switch INVERTIDO (placebo)          -13.11%   34.2%   -0.34   -75.4%    -0.48
+
+------------------------------------------------------------------------------------------------
+PLACEBO ALEATORIO -- 1000 barajados del vector de regimen
+------------------------------------------------------------------------------------------------
+  Sharpe de A: -0.105
+  distribucion aleatoria: media -0.207  p95 0.529  max 1.115
+  A esta en el percentil 57.8 de los switches aleatorios
+
+------------------------------------------------------------------------------------------------
+A POR AÑO
+------------------------------------------------------------------------------------------------
+  año          ret A  ret B (mom)  ret C (rev)
+  2021         13.7%        25.2%       -24.4%
+  2022        151.4%       -58.7%        62.0%
+  2023        -41.4%       -32.5%        15.6%
+  2024        -27.5%       -24.5%        -4.6%
+  2025        -10.9%        -1.7%       -14.6%
+  2026        -30.3%        20.5%       -30.1%
+
+================================================================================================
+VEREDICTO CONTRA EL CRITERIO PRE-REGISTRADO
+================================================================================================
+  [FALLA] 1. Sharpe A supera a B y a C por >= 0.15  (A -0.10 · B -0.47 · C -0.01)
+  [FALLA] 2. t de Newey-West de A >= 2.0  (t = 0.01)
+  [PASA] 3. placebo invertido D peor que A  (D -0.34 < A -0.10)
+  [FALLA] 4. A sobre el p95 del placebo aleatorio  (percentil 58)
+  [FALLA] 5. A positivo en >= 3 de 5 años  (2 años)
+
+  HIPOTESIS NO RESPALDADA. El switch por GEX no dispara el retorno de forma
+  robusta. Se reporta y se cierra, segun el pre-registro.
+
+  reporte: /Users/sant/Finance2026/GEX PROJECT /reports/regimen.txt
+================================================================================================

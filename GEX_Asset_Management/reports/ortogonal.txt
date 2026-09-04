@@ -1,0 +1,76 @@
+================================================================================================
+               TEST DE ORTOGONALIZACION -- Gamma sin su componente de volatilidad               
+================================================================================================
+
+panel: 7,738 obs · 259 semanas · 30 acciones
+
+------------------------------------------------------------------------------------------------
+A. CUANTO DE GAMMA ES VOLATILIDAD  (R2 de la regresion Gamma ~ IV, por fecha)
+------------------------------------------------------------------------------------------------
+  R2 de Gamma ~ IV:  mediana 0.067   p25 0.027   p75 0.135
+  correlacion Gamma-IV: mediana -0.246   % de fechas con signo negativo: 87%
+  (el paper reporta -0.11; una correlacion mucho mas fuerte que esa es
+   senal de que en mega-caps el vinculo mecanico domina)
+
+------------------------------------------------------------------------------------------------
+B. EL TEST -- predice el RESIDUO la volatilidad de la semana siguiente?
+------------------------------------------------------------------------------------------------
+   Prediccion del paper: coeficiente NEGATIVO y significativo.
+   Fama-MacBeth, t de Newey-West (4 lags).
+
+  especificacion                                            coef        se   t (NW)    sem
+  ----------------------------------------------------------------------------------------
+  1. Gamma cruda (referencia, = P3b col 1)               -1.4103    0.5785    -2.44    259
+  2. Gamma ORTOGONAL a IV  <-- el test                    0.0249    0.5921     0.04    259
+  3. Gamma ORTOGONAL a IV y vol previa                    0.0400    0.4741     0.08    257
+
+  4. control: la IV sola predice la vol futura            0.8664    0.0384    22.56    259
+  5. control: la vol previa sola                          0.5343    0.0234    22.88    257
+
+------------------------------------------------------------------------------------------------
+C. LA RAZON DE CANCELACION -- la unica variable que aparecio con senal propia
+------------------------------------------------------------------------------------------------
+   Salio con t = 2.26 en P3 (spec 5). El paper no la usa. Se testea
+   honestamente: si no sobrevive sus propios controles, era ruido.
+
+  especificacion                                            coef        se   t (NW)    sem
+  ----------------------------------------------------------------------------------------
+  6. razon net/gross sola                                 0.0567    0.0502     1.13    259
+  7. + IV                                                -0.0578    0.0385    -1.50    259
+  8. + IV + vol previa                                   -0.0811    0.0401    -2.02    257
+
+------------------------------------------------------------------------------------------------
+D. LA CONDICION DEL PAPER -- la senal debe venir de 'slow' (>31d)
+------------------------------------------------------------------------------------------------
+   En P2 salio fast ~ slow, que es una desviacion. Se testea por separado.
+
+  especificacion                                            coef        se   t (NW)    sem
+  ----------------------------------------------------------------------------------------
+  9.  Gamma slow (>31d) -- donde el paper dice           -3.8286    0.5870    -6.52    259
+  10. Gamma fast (<=31d)                                 -0.5214    2.3378    -0.22    259
+  11. Gamma ATM                                          -1.7694    0.4880    -3.63    259
+  12. Gamma OTM                                           7.2956    1.7187     4.24    259
+
+  13. Gamma slow ORTOGONAL a IV                          -1.3153    0.4943    -2.66    259
+
+------------------------------------------------------------------------------------------------
+E. RETORNOS (indicativo -- 60 meses no dan potencia para una prima chica)
+------------------------------------------------------------------------------------------------
+  especificacion                                            coef        se   t (NW)    sem
+  ----------------------------------------------------------------------------------------
+  14. retorno ~ Gamma cruda                              -0.0296    0.0367    -0.81    259
+  15. retorno ~ Gamma ORTOGONAL                          -0.0436    0.0323    -1.35    259
+
+================================================================================================
+VEREDICTO
+================================================================================================
+  Gamma cruda:      coef -1.4103   t = -2.48
+  Gamma ortogonal:  coef +0.0249   t = +0.04
+
+  NO QUEDA SENAL. Al quitarle la volatilidad, Gamma deja de predecir.
+  El efecto documentado es, en esta muestra, la mecanica de la formula:
+  gamma ~ 1/sigma por construccion, y sigma es persistente. No hay
+  evidencia de un canal de cobertura separable en mega-caps liquidas.
+
+  reporte: /Users/sant/Finance2026/GEX PROJECT /reports/ortogonal.txt
+================================================================================================
