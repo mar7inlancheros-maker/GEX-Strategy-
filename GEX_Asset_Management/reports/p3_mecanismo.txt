@@ -1,0 +1,54 @@
+============================================================================================
+            PUERTA P3 -- TEST DE MECANISMO: Gamma predice la volatilidad futura?            
+============================================================================================
+
+equities: 41,071 filas · 32 simbolos
+fechas de senal: 267 (semanales)
+panel: 7,648 observaciones accion-semana · 30 acciones · 256 semanas
+tras limpiar: 7,648 observaciones
+
+--------------------------------------------------------------------------------------------
+A. PANEL PRINCIPAL -- Gamma predice la volatilidad realizada de la semana siguiente
+--------------------------------------------------------------------------------------------
+   Prediccion del paper: coeficiente NEGATIVO.
+   Errores clusterizados por fecha. Efectos fijos por accion.
+
+  especificacion                                            coef       se        t       R2
+  -----------------------------------------------------------------------------------------
+  1. Gamma sola (con FE de accion)                       -0.0066   0.0079    -0.84    0.096
+  2. + volatilidad realizada previa                      -0.0053   0.0078    -0.68    0.098
+  3. + IV mediana                                         0.0047   0.0082     0.58    0.116
+  4. + log(ADV$) y log(precio)                            0.0004   0.0067     0.06    0.123
+  5. + razon de cancelacion                               0.0296   0.0131     2.26    0.127
+
+--------------------------------------------------------------------------------------------
+B. TEST DE RETORNOS -- INDICATIVO, NO CONCLUYENTE
+--------------------------------------------------------------------------------------------
+   Con ~52 semanas no hay potencia para una prima de riesgo pequena.
+   Se reporta el signo, no se interpreta la significancia.
+
+  especificacion                                            coef       se        t       R2
+  -----------------------------------------------------------------------------------------
+  retorno semana siguiente ~ Gamma                       -0.0005   0.0007    -0.75    0.002
+
+  Quintiles por Gamma (Q0 = Gamma mas baja = pata LARGA del paper):
+    quintil      ret sem. sig.   vol realizada       n
+    Q0                  0.196%           41.0%    1536
+    Q1                  0.461%           48.0%    1536
+    Q2                  0.222%           46.4%    1536
+    Q3                  0.092%           36.5%    1536
+    Q4                  0.217%           29.9%    1504
+    L - H              -0.021%           11.2%
+    (el paper predice: retorno L-H POSITIVO, volatilidad L-H POSITIVA)
+
+============================================================================================
+VEREDICTO DEL MECANISMO
+============================================================================================
+  NO CONFIRMADO. Coeficiente +0.0004 (positivo), t = 0.06.
+  En esta muestra Gamma NO predice negativamente la volatilidad futura.
+  No refuta el paper -- es otro regimen y otro universo -- pero el
+  mecanismo no aparece aqui, y sin mecanismo no hay razon para esperar
+  la prima de riesgo.
+
+  reporte: /Users/sant/Finance2026/GEX PROJECT /reports/p3_mecanismo.txt
+============================================================================================
