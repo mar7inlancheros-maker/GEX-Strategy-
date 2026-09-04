@@ -1,0 +1,17 @@
+# Versiones fijadas al entorno con el que se construyó el piloto (Python 3.9).
+# Núcleo de cálculo
+numpy==2.0.2
+pandas==2.3.3
+polars==1.36.1
+scipy==1.13.1
+numba==0.60.0
+pyarrow==21.0.0
+
+# Estadística (run_mecanismo, run_mecanismo_fm)
+statsmodels==0.14.6
+
+# Fuente de datos OPRA / equities (run_ingesta, fase0*)
+databento==0.64.0
+zstandard==0.25.0
+
+# gex/curves.py descarga de FRED con urllib (biblioteca estándar, sin dependencia).
