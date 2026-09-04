@@ -1,0 +1,82 @@
+==========================================================================================
+                   FASE 0.D -- DEDUPLICACION DE PUBLISHERS Y MODO BATCH                   
+                                     2026-09-01 17:42                                     
+==========================================================================================
+
+------------------------------------------------------------------------------------------
+1. COSTO: STREAMING vs BATCH  (gratis)
+------------------------------------------------------------------------------------------
+    schema / ventana                               streaming         batch    ahorro
+    --------------------------------------------------------------------------------
+    statistics, ventana OI (10-12 UTC)                 $1.38         $1.38     1.00x
+    definition, dia completo                           $0.20         $0.20     1.00x
+    cbbo-1m, cierre 19:55-20:00 UTC                    $0.23         $0.23     1.00x
+
+------------------------------------------------------------------------------------------
+2. ESTRUCTURA DE PUBLISHERS EN LOS REGISTROS DE OPEN INTEREST
+------------------------------------------------------------------------------------------
+    Se descarga AAPL, 1 dia, solo la ventana de OI. Costo ~$0.05.
+
+    Registros de OI: 65,700   contratos: 3,650   publishers distintos: 18
+    Columna de cantidad usada: quantity
+
+    a) Registros por publisher
+         publisher_id  registros  contratos        OI total
+                   20      3,650      3,650       5,405,022
+                   21      3,650      3,650       5,405,022
+                   22      3,650      3,650       5,405,022
+                   23      3,650      3,650       5,405,022
+                   24      3,650      3,650       5,405,022
+                   25      3,650      3,650       5,405,022
+                   26      3,650      3,650       5,405,022
+                   27      3,650      3,650       5,405,022
+                   28      3,650      3,650       5,405,022
+                   29      3,650      3,650       5,405,022
+                   31      3,650      3,650       5,405,022
+                   32      3,650      3,650       5,405,022
+                   33      3,650      3,650       5,405,022
+                   34      3,650      3,650       5,405,022
+                   35      3,650      3,650       5,405,022
+                   36      3,650      3,650       5,405,022
+                   37      3,650      3,650       5,405,022
+                   61      3,650      3,650       5,405,022
+
+    b) Cuantos publishers reportan cada contrato
+         publishers   contratos  % del total
+                 18       3,650       100.0%
+       min=18  mediana=18  max=18
+
+    c) Coinciden los publishers en el valor de OI del mismo contrato?
+       contratos donde TODOS los publishers dan el mismo OI: 3,650 de 3,650  (100.0%)
+       contratos con valores discrepantes: 0
+
+       OI total SUMANDO todo:              97,290,396
+       OI total DEDUPLICANDO:               5,405,022
+       factor de inflacion:                     18.00x
+
+       >>> VEREDICTO: los publishers replican el MISMO OI.
+       >>> REGLA: deduplicar por instrument_id. NUNCA sumar.
+
+------------------------------------------------------------------------------------------
+3. ts_ref vs ts_event  (confirma el desfase de un dia del OI)
+------------------------------------------------------------------------------------------
+    ts_event (llegada):  2026-06-10 10:30:00 -> 2026-06-10 10:30:41
+    ts_ref (referencia): NaT -> NaT
+    valores distintos de ts_ref: 0
+
+    >>> Si ts_ref apunta al dia habil ANTERIOR, el desfase de un dia
+    >>> queda confirmado por los datos y no por inferencia.
+
+==========================================================================================
+4. COSTO FINAL POR ALCANCE  (con el modo mas barato)
+==========================================================================================
+    Costos diarios usados: statistics $1.38  definition $0.20  quotes $0.23
+
+    alcance                           meses  definition  statistics    quotes       TOTAL
+    -------------------------------------------------------------------------------------
+    Piloto: 1 ano                        12         $50        $345       $56        $451
+    Medio: 2024-07 -> hoy                26        $110        $758      $124        $992
+    Completo: 2018-05 -> hoy            100        $415      $2,860      $468      $3,743
+
+    Salida guardada en: /Users/sant/Finance2026/GEX PROJECT /reports/fase0d_publishers.txt
+==========================================================================================

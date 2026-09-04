@@ -1,0 +1,84 @@
+================================================================================================
+              NEUTRALIZACION POR BETA Y SECTOR -- comparacion vs. cartera original              
+================================================================================================
+
+Calculando beta diario contra SPY (ventana expansiva, point-in-time)...
+  267 fechas x 30 nombres = 8010 estimaciones de beta
+  observaciones diarias disponibles en la ultima fecha: 1282
+
+------------------------------------------------------------------------------------------------
+                                     A. ORIGINAL (6v6)            B. NEUTRAL
+------------------------------------------------------------------------------------------------
+  retorno anual neto                            15.16%                12.59%
+  vol anual                                     32.59%                15.73%
+  Sharpe neto                                     0.43                  0.75
+  max drawdown                                 -49.66%               -18.17%
+  hit rate                                      51.88%                53.38%
+  t-stat                                          0.98                  1.71
+  turnover medio/rebal                            228%                  192%
+  costo total periodo                           12.62%                11.83%
+
+------------------------------------------------------------------------------------------------
+DIAGNOSTICO -- beta ponderada de cada pata (el numero que prueba si el fix funciono)
+------------------------------------------------------------------------------------------------
+                                           A. ORIGINAL            B. NEUTRAL
+  beta pata larga (prom)                          1.43                  1.09
+  beta pata corta (prom)                         -1.06                 -0.99
+  beta NETA del L-S (prom)                        0.37                  0.10
+  |beta neta| maxima                              1.39                  0.50
+
+  beta neta cerca de 0 = el mercado en general ya no mueve el L-S.
+  Si B esta mucho mas cerca de 0 que A, el ajuste esta cumpliendo su proposito.
+
+------------------------------------------------------------------------------------------------
+EXPOSICION NETA POR SECTOR -- cartera B, ultima fecha de rebalanceo
+------------------------------------------------------------------------------------------------
+  sector                 largo     corto      neta
+  Comunicaciones         0.110    -0.067     0.043
+  ConsumoBasico          0.328    -0.341    -0.013
+  ConsumoDisc            0.066    -0.070    -0.004
+  Energia                0.163    -0.112     0.051
+  Financiero             0.076    -0.145    -0.069
+  Industrial             0.087    -0.061     0.026
+  Tech                   0.170    -0.203    -0.034
+
+  |exposicion neta| promedio por sector, todas las fechas (0 = perfectamente neutral):
+    Financiero           0.058
+    ConsumoBasico        0.046
+    Tech                 0.042
+    Comunicaciones       0.029
+    Industrial           0.024
+    Energia              0.019
+    ConsumoDisc          0.013
+
+------------------------------------------------------------------------------------------------
+CURVAS DE CAPITAL -- A vs B, neto, base 100
+------------------------------------------------------------------------------------------------
+  fecha         A original   B neutral
+  2021-09-03          98.8        99.9
+  2021-12-03         102.9       112.1
+  2022-03-04          74.0       111.5
+  2022-06-03          55.2        95.7
+  2022-08-31          80.4       121.2
+  2022-11-25          80.4       122.3
+  2023-02-24          88.4       124.2
+  2023-05-26          90.0       124.4
+  2023-08-25          96.8       134.5
+  2023-11-17         104.8       138.0
+  2024-02-16         117.4       145.7
+  2024-05-17         117.8       146.4
+  2024-08-16         129.3       143.3
+  2024-11-15         117.7       145.3
+  2025-02-14         126.0       140.5
+  2025-05-16         115.2       137.2
+  2025-08-15         145.2       151.4
+  2025-10-24         160.9       164.4
+  2026-01-23         125.6       145.8
+  2026-04-23         126.1       153.6
+  2026-07-23         140.2       160.1
+  final              157.2       172.4
+
+  IC95% ret. anual NETO -- A: [-14.1%, +42.4%]   B: [-1.8%, +25.5%]
+  (con ~50 observaciones semanales el intervalo sigue siendo muy ancho en ambos casos --
+   esto compara si el SESGO estructural se corrigio, no da significancia estadistica.)
+================================================================================================

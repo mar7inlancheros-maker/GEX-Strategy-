@@ -1,0 +1,65 @@
+================================================================================================
+           PRIMA DE VARIANZA -- predice Gamma el spread entre realizada e implicita?            
+================================================================================================
+
+construyendo IV emparejada al horizonte (ATM, 7-45 dias)...
+  8,485 pares fecha-accion con IV ATM de plazo corto
+panel: 7,593 obs · 255 semanas · 30 acciones
+
+------------------------------------------------------------------------------------------------
+A. LINEA BASE -- cuanto vale la prima de varianza en esta muestra
+------------------------------------------------------------------------------------------------
+  RV futura - IV ATM:  media -0.0199   mediana -0.0575
+  % de observaciones con RV > IV: 33.0%
+  IV ATM media 0.424  ·  RV futura media 0.404
+  -> la implicita SUPERA a la realizada en promedio: prima positiva para el VENDEDOR de opciones
+
+------------------------------------------------------------------------------------------------
+B. EL TEST -- predice Gamma la prima? (Fama-MacBeth, Newey-West 4 rezagos)
+------------------------------------------------------------------------------------------------
+   Si el canal de cobertura opera y el mercado no lo tiene precificado,
+   Gamma baja deberia anticipar RV > IV. Coeficiente NEGATIVO.
+
+  especificacion                                        coef        se   t (NW)    sem
+  ------------------------------------------------------------------------------------
+  1. prima ~ Gamma                                    0.4893    0.5521     0.89    255
+  2. + vol realizada previa                           0.3995    0.5687     0.70    253
+  3. + IV ATM                                         0.4506    0.5826     0.77    255
+  4. + ambas                                          0.3306    0.4623     0.72    253
+
+  5. solo componente slow (>31d)                     -0.5567    0.5267    -1.06    255
+  6. control: la IV sola predice la prima            -0.0324    0.0319    -1.01    255
+
+------------------------------------------------------------------------------------------------
+C. LO QUE SE OPERARIA -- prima media por quintil de Gamma
+------------------------------------------------------------------------------------------------
+   Q0 = Gamma mas baja = donde el paper dice comprar volatilidad.
+   Un straddle delta-cubierto cobra aproximadamente esta prima.
+
+  quintil       IV ATM   RV futura   prima RV-IV       n
+  ------------------------------------------------------
+  Q0             0.441       0.412       -0.0284   1,530
+  Q1             0.510       0.481       -0.0289   1,516
+  Q2             0.467       0.459       -0.0076   1,501
+  Q3             0.392       0.357       -0.0357   1,516
+  Q4             0.311       0.312       +0.0011   1,530
+
+  spread Q0 - Q4: -0.0296 puntos de volatilidad anualizada
+  (positivo = comprar vol en Gamma baja y venderla en Gamma alta gana)
+  serie temporal del spread: media -0.0296  se 0.0303  t = -0.98  (255 semanas)
+
+================================================================================================
+VEREDICTO
+================================================================================================
+  Gamma -> prima:   coef +0.4893   t = +0.89
+  spread Q0-Q4:     -0.0296            t = -0.98
+
+  NO HAY SENAL. Gamma no predice el spread entre realizada e implicita.
+  El mercado ya tiene precificado en la IV lo que Gamma pueda decir
+  sobre la volatilidad futura. Un straddle guiado por esta senal
+  cobraria la prima media del quintil y nada mas -- y como Gamma baja
+  == IV alta, seria comprar las opciones mas caras del universo.
+  NO construir el backtest de opciones.
+
+  reporte: /Users/sant/Finance2026/GEX PROJECT /reports/vrp.txt
+================================================================================================

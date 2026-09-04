@@ -1,0 +1,99 @@
+# ingesta pilot  2025-09-02 -> 2026-08-31  53 dias  inicio 19:59:54
+
+[equities] cierre y volumen del subyacente...
+  8,992 filas guardadas en equities/daily_pilot.parquet
+
+[calidad] 1 dias con calidad reducida segun Databento:
+    2025-10-22  degraded
+    (se ingestan igual, quedan marcados para excluirlos en la puerta P2)
+
+[opciones] 53 dias por bajar, 4 en paralelo
+  fecha        contratos        OI   quotes   unidos  pub  desc%   def    oi  cbbo  notas
+  2025-09-19      92,788 1,658,052   83,276   67,264   18   9.0%    28    35    46  
+  2025-09-05      93,400 1,594,836   83,734   63,896   18   9.3%    43    34    70  
+  2025-09-26      96,244 1,689,048   86,911   67,595   18   8.5%    49    45    57  
+  2025-09-12      95,374 1,674,396   85,427   66,400   18   9.2%    36    51    82  
+  2025-10-17      93,606 1,673,964   85,531   69,915   18   7.4%    22    39    90  
+  2025-10-03      95,640 1,680,372   85,865   67,908   18   7.9%    42    47   110  
+  2025-10-24      95,066 1,653,984   86,411   68,875   18   8.0%    35    73    73  
+  2025-10-10      96,684 1,693,368   88,180   70,085   18   7.6%    33    40   130  
+  2025-10-31     100,734 1,750,824   90,788   71,708   18   8.5%    21    82    88  
+  2025-11-07     102,030 1,751,544   92,097   71,566   18   7.8%    38    60    88  
+  2025-11-21     100,516 1,800,000   89,173   70,826   18   8.4%    52    49    48  
+  2025-11-14     101,964 1,787,580   91,302   72,071   18   7.3%    56    54    73  
+  2025-11-28     102,542 1,797,624        0        0   18   0.0%    54    63    36  falta OI o cotizaciones
+  2025-12-05     101,910 1,785,600   89,933   69,705   18   9.0%    45    71    84  
+  2025-12-12     101,176 1,787,112   88,899   70,240   18   9.2%    38    43   129  
+  2025-12-19      97,158 1,740,492   83,516   67,208   18   8.3%    19    53   106  
+  2026-01-02      95,872 1,670,904   84,370   64,836   18   7.9%    33    45    85  
+  2025-12-26      95,840 1,677,600   83,005   64,372   18   7.1%    44    60   119  
+  2026-01-16      99,982 1,787,796   88,128   69,001   18   8.0%    41    52    73  
+  2026-01-09     100,792 1,753,596   89,136   67,547   18   8.1%    63    71   114  
+  ... 20/53 · 15.9 min transcurridos · faltan ~26 min
+  2026-02-06     109,124 1,880,424   97,390   73,730   18   8.1%    42    83    76  
+  2026-01-23     101,354 1,775,628   90,992   69,913   18   6.6%    57    69   101  
+  2026-01-30     107,856 1,857,312   97,057   73,908   18   7.5%    68    71    92  
+  2026-02-13     109,854 1,907,640   97,937   74,329   18   7.9%    33   105   111  
+  2026-02-27     110,504 1,919,376   98,951   74,261   18   8.0%    49    38    58  
+  2026-02-20     108,542 1,910,952   95,713   72,716   18   8.9%    46    83    83  
+  2026-03-06     110,782 1,942,956   99,236   75,429   18   7.6%    29    69   111  
+  2026-04-03           0         0        0        0    0   0.0%     0     0     0  ERROR BentoClientError: 422 symbology_invalid_request
+Could not resolve smart symbols: AAPL.OPT,MSFT.OPT,NVDA.OPT,AMD.OPT,AMZN.OPT,GOOGL.OPT,META.OPT,TSLA.OPT,NFLX.OPT,JPM.OPT,BAC.OPT,XOM.OPT,CVX.OPT,DIS.OPT,BA.OPT,WMT.OPT,KO.OPT,PG.OPT,PLTR.OPT,COIN.OPT,MSTR.OPT,GME.OPT,RIVN.OPT,SOFI.OPT,UBER.OPT,SHOP.OPT,MU.OPT,CRM.OPT,GS.OPT,CAT.OPT,SPY.OPT,QQQ.OPT
+documentation: https://databento.com/docs/api-reference-historical/basics/symbology
+  2026-03-20     108,248 1,918,476   95,908   73,218   18   9.5%    66    62    79  
+  2026-03-13     112,370 1,955,844   99,849   74,725   18   9.4%    48    72   118  
+  2026-04-10     111,208 1,958,328   99,312   74,979   18   8.8%    46    67    72  
+  2026-04-17     108,690         0        0        0    0   0.0%    35     0     0  ERROR BentoServerError: 504 The remote gateway timed out.
+  2026-03-27     110,744 1,920,132   98,442   73,198   18   9.5%    69   104   104  
+  2026-04-24     110,666 1,906,128        0        0   18   0.0%    35    52     0  ERROR BentoServerError: 504 The remote gateway timed out.
+  2026-05-01     114,526 1,994,364  102,108   78,675   18   8.0%    34    72    38  
+  2026-05-08     116,556         0        0        0    0   0.0%    50     0     0  ERROR BentoServerError: 504 The remote gateway timed out.
+  2026-06-05           0         0        0        0    0   0.0%     0     0     0  ERROR BentoServerError: 504 The remote gateway timed out.
+  2026-05-22     116,676 2,029,176  104,328   81,058   18   8.4%    32    53    68  
+  2026-06-19           0         0        0        0    0   0.0%     0     0     0  ERROR BentoClientError: 422 symbology_invalid_request
+Could not resolve smart symbols: AAPL.OPT,MSFT.OPT,NVDA.OPT,AMD.OPT,AMZN.OPT,GOOGL.OPT,META.OPT,TSLA.OPT,NFLX.OPT,JPM.OPT,BAC.OPT,XOM.OPT,CVX.OPT,DIS.OPT,BA.OPT,WMT.OPT,KO.OPT,PG.OPT,PLTR.OPT,COIN.OPT,MSTR.OPT,GME.OPT,RIVN.OPT,SOFI.OPT,UBER.OPT,SHOP.OPT,MU.OPT,CRM.OPT,GS.OPT,CAT.OPT,SPY.OPT,QQQ.OPT
+documentation: https://databento.com/docs/api-reference-historical/basics/symbology
+  2026-05-15     117,940 2,076,120  105,131   82,705   18   8.4%    40    72    98  
+  ... 40/53 · 29.6 min transcurridos · faltan ~10 min
+  2026-07-03           0         0        0        0    0   0.0%     0     0     0  ERROR BentoClientError: 422 symbology_invalid_request
+Could not resolve smart symbols: AAPL.OPT,MSFT.OPT,NVDA.OPT,AMD.OPT,AMZN.OPT,GOOGL.OPT,META.OPT,TSLA.OPT,NFLX.OPT,JPM.OPT,BAC.OPT,XOM.OPT,CVX.OPT,DIS.OPT,BA.OPT,WMT.OPT,KO.OPT,PG.OPT,PLTR.OPT,COIN.OPT,MSTR.OPT,GME.OPT,RIVN.OPT,SOFI.OPT,UBER.OPT,SHOP.OPT,MU.OPT,CRM.OPT,GS.OPT,CAT.OPT,SPY.OPT,QQQ.OPT
+documentation: https://databento.com/docs/api-reference-historical/basics/symbology
+  2026-05-29     122,700 2,105,676  109,989   83,226   18   8.3%    35    49    55  
+  2026-06-26     120,120 2,081,952  106,901   81,256   18   8.8%    27    64    49  
+  2026-06-12     123,944 2,151,864        0        0   18   0.0%    64    70     0  ERROR BentoServerError: 504 The remote gateway timed out.
+  2026-07-17     120,356 2,117,628        0        0   18   0.0%    21    62     0  ERROR BentoServerError: 504 The remote gateway timed out.
+  2026-07-10     124,412 2,151,108        0        0   18   0.0%    62    53     0  ERROR BentoError: Error streaming response: Response ended prematurely
+  2026-07-31     124,400 2,167,668  111,083   83,736   18   8.7%    35    47    56  
+  2026-08-07     124,524 2,174,688        0        0   18   0.0%    21    49     0  ERROR BentoServerError: 504 The remote gateway timed out.
+  2026-07-24     122,008 2,099,808        0        0   18   0.0%    53    70     0  ERROR BentoServerError: 504 The remote gateway timed out.
+  2026-08-21           0         0        0        0    0   0.0%     0     0     0  ERROR BentoServerError: 504 The remote gateway timed out.
+  2026-08-14     122,386 2,136,456  107,380   81,527   18   9.8%    29    39    60  
+  2026-08-28     116,840 2,018,304  102,741   77,822   18   9.8%    28    43    70  
+  2026-08-31     111,728 1,993,932   99,112   76,317   18   9.0%    30    54    68  
+  ... 53/53 · 37.0 min transcurridos · faltan ~0 min
+
+[feriados] 14 semanas sin datos en su ultimo dia habil; probando dias anteriores
+  semana 2025-W48: 2025-11-27 tampoco tiene datos (BentoClientError: 422 symbology_invalid_request
+Could not resolve smart symbols: AAPL.OPT,MSFT.OPT,NVDA.OPT,AMD.OPT,AMZN.OPT,GOOGL.OPT,META.OPT,TSLA.OPT,NFLX.OPT,JPM.OPT,BAC.OPT,XOM.OPT,CVX.OPT,DIS.OPT,BA.OPT,WMT.OPT,KO.OPT,PG.OPT,PLTR.OPT,COIN.OPT,MSTR.OPT,GME.OPT,RIVN.OPT,SOFI.OPT,UBER.OPT,SHOP.OPT,MU.OPT,CRM.OPT,GS.OPT,CAT.OPT,SPY.OPT,QQQ.OPT
+documentation: https://databento.com/docs/api-reference-historical/basics/symbology)
+  semana 2025-W48 resuelta con 2025-11-26  (69,354 contratos)
+  semana 2026-W14: 2026-04-02 tampoco tiene datos (BentoServerError: 504 The remote gateway timed out.)
+  semana 2026-W14: 2026-04-01 tampoco tiene datos (BentoServerError: 504 The remote gateway timed out.)
+  semana 2026-W14 SIN DATOS tras 3 intentos
+  semana 2026-W16: 2026-04-16 tampoco tiene datos (BentoServerError: 504 The remote gateway timed out.)
+  semana 2026-W16 resuelta con 2026-04-15  (76,068 contratos)
+  semana 2026-W17 resuelta con 2026-04-23  (76,314 contratos)
+  semana 2026-W19 resuelta con 2026-05-07  (80,374 contratos)
+  semana 2026-W23 resuelta con 2026-06-04  (85,434 contratos)
+  semana 2026-W24 resuelta con 2026-06-11  (85,850 contratos)
+  semana 2026-W25 resuelta con 2026-06-18  (82,975 contratos)
+  semana 2026-W27 resuelta con 2026-07-02  (80,698 contratos)
+  semana 2026-W28 resuelta con 2026-07-09  (83,217 contratos)
+  semana 2026-W29 resuelta con 2026-07-16  (84,349 contratos)
+  semana 2026-W30 resuelta con 2026-07-23  (83,230 contratos)
+  semana 2026-W32 resuelta con 2026-08-06  (83,691 contratos)
+  semana 2026-W34 resuelta con 2026-08-20  (80,839 contratos)
+
+# fin 21:11:35  ·  52 dias OK  ·  13 con error
+# duracion total 71.6 min
+# log: /Users/sant/Finance2026/GEX PROJECT /reports/ingesta_20260901_1958.log

@@ -1,0 +1,944 @@
+<title>Cinco Años de Gamma Exposure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,600;0,700;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#F4F6F8; --card:#FFFFFF; --sunk:#EAEEF2;
+  --ink:#0E141C; --ink-2:#3D4855; --ink-3:#6A7686; --rule:#D6DDE4; --rule-2:#E7ECF1;
+  --teal:#0090A8; --brick:#C4402F; --violet:#6E57A8;
+  --pass:#2F6B4A; --fail:#A8412F; --warn:#96701A;
+  --ref:#7C8797; --ref-2:#A6B0BC;
+  --grid:#E2E8ED; --shadow:0 1px 2px rgba(14,20,28,.05),0 8px 24px -12px rgba(14,20,28,.14);
+  --maxw:1180px; --prose:66ch;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0C1118; --card:#131A23; --sunk:#0F151D;
+  --ink:#E6ECF2; --ink-2:#A9B5C2; --ink-3:#7A8797; --rule:#243040; --rule-2:#1C2531;
+  --teal:#2BB4CC; --brick:#E2705C; --violet:#9B85D4;
+  --pass:#5FA37C; --fail:#DE7663; --warn:#C9A248;
+  --ref:#7C8797; --ref-2:#4E5967;
+  --grid:#1C2531; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --paper:#0C1118; --card:#131A23; --sunk:#0F151D;
+  --ink:#E6ECF2; --ink-2:#A9B5C2; --ink-3:#7A8797; --rule:#243040; --rule-2:#1C2531;
+  --teal:#2BB4CC; --brick:#E2705C; --violet:#9B85D4;
+  --pass:#5FA37C; --fail:#DE7663; --warn:#C9A248;
+  --ref:#7C8797; --ref-2:#4E5967;
+  --grid:#1C2531; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
+@media(max-width:720px){.wrap{padding:0 18px}}
+h1,h2,h3{font-family:Newsreader,Georgia,serif;text-wrap:balance;margin:0;font-weight:600}
+h1{font-size:clamp(2.6rem,6vw,4.1rem);line-height:1.02;letter-spacing:-.022em}
+h2{font-size:clamp(1.65rem,3vw,2.2rem);line-height:1.13;letter-spacing:-.014em}
+h3{font-size:1.16rem;line-height:1.3;letter-spacing:-.006em}
+p{margin:0 0 1.05em;max-width:var(--prose)}
+a{color:var(--teal)}
+.lede{font-size:1.16rem;color:var(--ink-2);max-width:60ch}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.7rem;font-weight:500;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3)}
+.mono{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+.num{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+
+/* ---- hero ---- */
+header.hero{border-bottom:1px solid var(--rule);padding:76px 0 46px;margin-bottom:8px}
+.hero .eyebrow{margin-bottom:20px}
+.hero h1{margin-bottom:22px}
+.verdict{display:inline-flex;align-items:center;gap:10px;padding:7px 15px;border-radius:100px;
+  background:color-mix(in srgb,var(--fail) 11%,transparent);
+  border:1px solid color-mix(in srgb,var(--fail) 32%,transparent);
+  color:var(--fail);font-weight:600;font-size:.83rem;margin-bottom:24px}
+.verdict::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.meta{display:flex;flex-wrap:wrap;gap:0 34px;margin-top:34px;padding-top:22px;border-top:1px solid var(--rule-2)}
+.meta div{font-size:.82rem;color:var(--ink-3)}
+.meta b{display:block;font-family:"IBM Plex Mono",monospace;font-size:1.02rem;color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
+
+/* ---- sections ---- */
+section{padding:58px 0;border-bottom:1px solid var(--rule-2)}
+section:last-of-type{border-bottom:0}
+.shead{display:flex;gap:18px;align-items:baseline;margin-bottom:26px}
+.snum{font-family:"IBM Plex Mono",monospace;font-size:.78rem;color:var(--teal);
+  font-weight:600;padding-top:.5em;flex:none;letter-spacing:.06em}
+
+/* ---- figures ---- */
+figure{margin:30px 0 0;background:var(--card);border:1px solid var(--rule);
+  border-radius:9px;padding:22px 22px 16px;box-shadow:var(--shadow)}
+figure.plain{background:none;border:0;box-shadow:none;padding:0}
+figcaption{font-size:.83rem;color:var(--ink-3);margin-top:14px;padding-top:12px;
+  border-top:1px solid var(--rule-2);max-width:78ch}
+.ftitle{font-family:Newsreader,Georgia,serif;font-size:1.08rem;font-weight:600;margin-bottom:3px}
+.fsub{font-size:.82rem;color:var(--ink-3);margin-bottom:16px}
+.scroll{overflow-x:auto}
+svg{display:block;max-width:100%;height:auto}
+svg text{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+
+/* ---- legend ---- */
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;margin-bottom:16px;font-size:.79rem}
+.legend span{display:inline-flex;align-items:center;gap:7px;color:var(--ink-2)}
+.sw{width:16px;height:3px;border-radius:2px;flex:none}
+.sw.d{background:none;border-top:2.5px dashed var(--ref)}
+
+/* ---- tables ---- */
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+th,td{padding:8px 12px;text-align:right;border-bottom:1px solid var(--rule-2);white-space:nowrap}
+th{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--ink-3);font-weight:500;border-bottom:1px solid var(--rule)}
+th:first-child,td:first-child{text-align:left}
+td.num,td .num{font-variant-numeric:tabular-nums}
+tbody tr:hover{background:var(--sunk)}
+tr.hi td{background:color-mix(in srgb,var(--teal) 7%,transparent);font-weight:500}
+.pos{color:var(--pass)} .neg{color:var(--fail)}
+
+/* ---- gates ---- */
+.gates{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);
+  border-radius:9px;overflow:hidden;margin-top:26px}
+.gate{background:var(--card);padding:16px 20px;display:grid;
+  grid-template-columns:76px 1fr auto;gap:18px;align-items:center}
+.gate .g-id{font-family:"IBM Plex Mono",monospace;font-size:.76rem;color:var(--ink-3);font-weight:500}
+.gate .g-name{font-weight:500;font-size:.93rem}
+.gate .g-det{font-size:.81rem;color:var(--ink-3);margin-top:1px}
+.chip{font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;letter-spacing:.06em;
+  padding:4px 10px;border-radius:4px;white-space:nowrap}
+.chip.ok{background:color-mix(in srgb,var(--pass) 14%,transparent);color:var(--pass)}
+.chip.no{background:color-mix(in srgb,var(--fail) 14%,transparent);color:var(--fail)}
+.chip.mid{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn)}
+
+/* ---- callout ---- */
+.note{border-left:2.5px solid var(--teal);padding:2px 0 2px 20px;margin:26px 0;max-width:72ch}
+.note.warn{border-color:var(--warn)}
+.note.bad{border-color:var(--fail)}
+.note p:last-child{margin-bottom:0}
+.note .eyebrow{display:block;margin-bottom:7px;color:var(--ink-3)}
+
+/* ---- stat row ---- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:1px;
+  background:var(--rule);border:1px solid var(--rule);border-radius:9px;overflow:hidden;margin:28px 0 0}
+.stat{background:var(--card);padding:16px 18px}
+.stat .k{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.stat .v{font-family:"IBM Plex Mono",monospace;font-size:1.5rem;font-weight:500;
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1.1}
+.stat .s{font-size:.76rem;color:var(--ink-3);margin-top:3px}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:840px){.two{grid-template-columns:1fr}
+  .gate{grid-template-columns:1fr auto;gap:8px}.gate .g-id{grid-column:1/-1}}
+
+/* ---- tooltip ---- */
+.tip{position:fixed;pointer-events:none;z-index:99;background:var(--card);
+  border:1px solid var(--rule);border-radius:7px;padding:9px 12px;font-size:.78rem;
+  box-shadow:var(--shadow);opacity:0;transition:opacity .1s;max-width:230px}
+.tip .t-h{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--ink-3);
+  margin-bottom:5px;letter-spacing:.05em}
+.tip .t-r{display:flex;justify-content:space-between;gap:16px;line-height:1.55}
+.tip .t-r b{font-family:"IBM Plex Mono",monospace;font-weight:500;font-variant-numeric:tabular-nums}
+.tip .dot{width:8px;height:8px;border-radius:2px;display:inline-block;margin-right:6px}
+
+footer{padding:44px 0 70px;color:var(--ink-3);font-size:.83rem}
+footer p{max-width:70ch}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:3px}
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Piloto Net Gamma Exposure &middot; Soebhag (2023) &middot; 2021&ndash;2026</div>
+    <h1>El efecto existe.<br>El mecanismo no.</h1>
+    <div class="verdict">NO-GO para escalar al build completo</div>
+    <p class="lede">Cinco años de cadena OPRA, 15,6 millones de contrato-día y 30 mega-caps.
+    La señal replica la estructura del paper con precisión — y se desvanece exactamente
+    cuando se controla por volatilidad implícita. Este informe muestra por qué, y qué
+    sobrevive.</p>
+    <div class="meta">
+      <div><b>2021-09-03</b>inicio de muestra</div>
+      <div><b>2026-08-31</b>fin de muestra</div>
+      <div><b>267</b>fechas semanales</div>
+      <div><b>15 617 846</b>contrato-día</div>
+      <div><b>30 + 2</b>acciones e índices</div>
+      <div><b>~USD 200</b>costo de datos</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section id="que">
+  <div class="shead"><div class="snum">01</div><div>
+    <h2>Qué se probó</h2></div></div>
+  <p>La <b>Ecuación 1</b> de Soebhag mide el gamma neto que los creadores de mercado
+  cargan en cada acción: suma la gamma de los calls, resta la de los puts, pondera por
+  open interest y normaliza por el volumen en dólares de 21 días.</p>
+  <p>La tesis es un canal de cobertura. Si los dealers están largos gamma, re-balancean
+  contra la tendencia y <b>amortiguan</b> la volatilidad; si están cortos, la
+  <b>amplifican</b>. De ahí la predicción central: gamma alta hoy debería anticipar
+  menos volatilidad la semana que viene. Coeficiente negativo.</p>
+  <div class="note">
+    <span class="eyebrow">La pregunta del piloto</span>
+    <p>¿Opera ese canal en mega-caps líquidas, en el régimen posterior a 2021 — dominado
+    por 0DTE y flujo minorista — que no existía en la muestra de 1996&ndash;2021 del paper?</p>
+  </div>
+</section>
+
+<section id="datos">
+  <div class="shead"><div class="snum">02</div><div>
+    <h2>Los datos, y dos errores que hubo que corregir</h2></div></div>
+  <p>La descarga cubrió cinco años contiguos de OPRA en cuatro tramos. Durante la
+  construcción aparecieron dos defectos que habrían sesgado todo el análisis. Ninguno
+  era visible en los resultados finales — solo al contrastar contra fuentes externas.</p>
+
+  <div class="gates">
+    <div class="gate">
+      <div class="g-id">HALLAZGO 1</div>
+      <div><div class="g-name">La ventana del open interest estaba calibrada al régimen equivocado</div>
+      <div class="g-det">OPRA movió la ráfaga de OI de las 13:31/14:31&nbsp;UTC a las 10:30&nbsp;UTC alrededor de abril&nbsp;2023.
+      La ventana fija 10:00&ndash;12:00 devolvía <b>cero OI</b> para todo dato anterior. Ampliada a 10:00&ndash;15:00.</div></div>
+      <div class="chip ok">CORREGIDO</div>
+    </div>
+    <div class="gate">
+      <div class="g-id">HALLAZGO 2</div>
+      <div><div class="g-name">La tasa libre de riesgo se estimaba, y salía 3-5&times; por debajo</div>
+      <div class="g-det">Extraerla de la pendiente de la paridad put-call no funciona: en vencimientos cortos
+      distinguir r&nbsp;=&nbsp;5&nbsp;% de r&nbsp;=&nbsp;1&nbsp;% exige resolver la pendiente a 0,002, bajo el ruido de cotización.
+      Daba 1,02&nbsp;% en 2023 (real: 4,5&ndash;5,5&nbsp;%). En cadena, el dividendo quedaba topado en cero en 28 de 32 tickers.</div></div>
+      <div class="chip ok">CORREGIDO</div>
+    </div>
+  </div>
+
+  <div class="note warn" style="margin-top:26px">
+    <span class="eyebrow">Y uno que no se pudo resolver con el proveedor</span>
+    <p>Databento no tiene volumen consolidado antes de julio&nbsp;2024. Cada feed por bolsa
+    trae solo lo ejecutado en <em>su</em> mercado: XNAS&nbsp;+&nbsp;XNYS&nbsp;+&nbsp;ARCX sumados dan
+    27&ndash;55&nbsp;% del consolidado, y el faltante varía por ticker — ningún factor constante lo
+    corrige. El histórico 2021&ndash;2024 vino de yfinance, des-ajustado por split y validado
+    contra Databento en el solape: error mediano <b>0,0000&nbsp;%</b> en cierre y
+    <b>0,0001&nbsp;%</b> en volumen sobre 17 024 filas.</p>
+  </div>
+</section>
+
+<section id="senal">
+  <div class="shead"><div class="snum">03</div><div>
+    <h2>La señal, y el problema que lleva dentro</h2></div></div>
+  <p>La gamma de Black-Scholes lleva <span class="mono">1/(S·σ·√T)</span> en su definición.
+  Una acción con volatilidad implícita baja tiene, <b>por construcción</b>, más gamma por
+  contrato. Eso no es un hallazgo económico: es la fórmula.</p>
+  <p>El gráfico siguiente es la evidencia directa. Cada punto es una de las 30 acciones,
+  promediada sobre los cinco años.</p>
+
+  <figure>
+    <div class="ftitle">Γ contra volatilidad implícita, 30 acciones</div>
+    <div class="fsub">Promedio 2021-2026 · el eje horizontal es 1/IV, la forma que predice la fórmula</div>
+    <div class="scroll"><div id="c-scatter"></div></div>
+    <figcaption><b>corr(Γ, 1/IV) = +0,573</b> frente a <b>corr(Γ, log ADV$) = 0,062</b>.
+    La relación no es con el tamaño ni con la liquidez: es con la volatilidad, y con la
+    forma funcional exacta que impone la definición de gamma. Las etiquetas marcan los
+    seis nombres más frecuentes de cada pata.</figcaption>
+  </figure>
+
+  <p style="margin-top:30px">La consecuencia es estructural. Ordenar acciones por Γ es,
+  en buena medida, ordenarlas por volatilidad inversa — y la cartera resultante queda
+  <b>larga en nombres volátiles y corta en defensivos</b>, sin que nadie lo haya pedido.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="k">IV pata larga</div><div class="v">48,3 %</div>
+      <div class="s">RIVN, MU, AMD, CAT, CRM, BA</div></div>
+    <div class="stat"><div class="k">IV pata corta</div><div class="v">25,8 %</div>
+      <div class="s">KO, AAPL, PG, WMT, CVX, JPM</div></div>
+    <div class="stat"><div class="k">corr(Γ, 1/IV)</div><div class="v">+0,573</div>
+      <div class="s">el vínculo mecánico</div></div>
+    <div class="stat"><div class="k">corr(Γ, log ADV$)</div><div class="v">+0,062</div>
+      <div class="s">no es tamaño</div></div>
+  </div>
+
+  <figure>
+    <div class="ftitle">Cómo se comportó la señal cada año</div>
+    <div class="fsub">Porcentaje de observaciones con Γ negativa &middot; el paper reporta 21,8 % sobre 1996-2021</div>
+    <div class="scroll"><div id="c-gamneg"></div></div>
+    <figcaption>Todos los años quedan bajo el 21,8 % de referencia salvo <b>2022</b>, donde
+    casi la mitad de las gammas se van a negativo. Es coherente: en un mercado bajista los
+    inversores se cargan de puts, los dealers quedan cortos gamma. La señal es
+    <b>dependiente del régimen</b>, y ese detalle reaparece en el backtest.</figcaption>
+  </figure>
+</section>
+
+<section id="puertas">
+  <div class="shead"><div class="snum">04</div><div>
+    <h2>Las puertas de validación</h2></div></div>
+  <p>El plan del proyecto define puertas secuenciales: ninguna fase avanza sin pasar la
+  anterior. Se corrieron todas. Las tres primeras pasan; el mecanismo no.</p>
+
+  <div class="gates">
+    <div class="gate"><div class="g-id">P1</div>
+      <div><div class="g-name">Motor de valuación</div>
+      <div class="g-det">CRR→BSM error 1,2e-3 · round-trip IV 1,3e-10 · paridad put-call 3,0e-11</div></div>
+      <div class="chip ok">25/25</div></div>
+    <div class="gate"><div class="g-id">P2</div>
+      <div><div class="g-name">Magnitudes de Γ contra la Tabla 2 del paper</div>
+      <div class="g-det">P10 −0,010 (ref −0,01) · mediana 0,016 (ref 0,02) · P90 0,068 (ref 0,04) · gamma de índice negativa</div></div>
+      <div class="chip ok">4 DE 5</div></div>
+    <div class="gate"><div class="g-id">P2b</div>
+      <div><div class="g-name">Estabilidad del ranking ante ruido</div>
+      <div class="g-det">Spearman mínimo 0,9857 sobre 7 escenarios de tasa, dividendo y ruido de IV/OI</div></div>
+      <div class="chip ok">PASA</div></div>
+    <div class="gate"><div class="g-id">P3</div>
+      <div><div class="g-name">Mecanismo — panel con efectos fijos</div>
+      <div class="g-det">Γ sola t = −0,84 · con controles completos t = <b>0,06</b></div></div>
+      <div class="chip no">NO CONFIRMA</div></div>
+    <div class="gate"><div class="g-id">P3b</div>
+      <div><div class="g-name">Mecanismo — Fama-MacBeth, especificación del paper</div>
+      <div class="g-det">Γ sola t = −2,51 · controlando IV t = <b>+0,08</b></div></div>
+      <div class="chip no">NO CONFIRMA</div></div>
+    <div class="gate"><div class="g-id">EXTRA</div>
+      <div><div class="g-name">Ortogonalización — el test decisivo</div>
+      <div class="g-det">Residuo de Γ tras quitarle la IV: t = <b>+0,04</b> · pero el componente <span class="mono">slow</span> sobrevive: t = −2,66</div></div>
+      <div class="chip mid">MATIZADO</div></div>
+  </div>
+
+  <h3 style="margin-top:44px">Lo que sí replicó del paper</h3>
+  <p>Antes del veredicto negativo conviene registrar lo que salió bien, porque valida el
+  pipeline. El paper descompone Γ en dos partes para separar cobertura de información
+  privada, y predice que solo la primera sea significativa. Eso se reprodujo casi exacto:</p>
+
+  <div class="scroll"><table>
+    <thead><tr><th>Componente</th><th>coef</th><th>t (Newey-West)</th><th>El paper</th><th>¿Replica?</th></tr></thead>
+    <tbody>
+      <tr class="hi"><td>Γ_viejo — re-balanceo de cobertura</td><td class="num">−1,864</td><td class="num">−4,05</td><td class="num">t = −4,57</td><td class="pos">Sí</td></tr>
+      <tr><td>Γ_info — información privada</td><td class="num">+2,205</td><td class="num">+0,51</td><td>no significativo</td><td class="pos">Sí</td></tr>
+      <tr><td>Γ_viejo controlando por IV</td><td class="num">−0,344</td><td class="num">−1,01</td><td>—</td><td class="neg">Se cae</td></tr>
+    </tbody>
+  </table></div>
+  <p style="margin-top:16px;font-size:.88rem;color:var(--ink-3);max-width:74ch">Γ_viejo usa el
+  open interest de la semana anterior con el precio de hoy: son posiciones que ya existían y
+  no pueden venir de información posterior. Que este componente sea el significativo, y no el
+  de información, es la firma que el paper usa para atribuir el efecto a cobertura.</p>
+
+  <figure>
+    <div class="ftitle">El test de ortogonalización</div>
+    <div class="fsub">Estadístico t de Fama-MacBeth · la línea punteada marca significancia al 5 %</div>
+    <div class="scroll"><div id="c-tstat"></div></div>
+    <figcaption>Barras sólidas: la variable cruda. Barras huecas: la misma variable después de
+    quitarle, fecha por fecha, la parte explicada por la volatilidad implícita. <b>Γ agregada
+    pierde todo su poder</b> (−2,44 → +0,04). Los controles muestran quién predecía realmente:
+    IV y volatilidad previa, con t sobre 22.</figcaption>
+  </figure>
+
+  <div class="note bad">
+    <span class="eyebrow">El resultado central</span>
+    <p>La relación negativa entre Γ y volatilidad futura es real y significativa sin controles.
+    No sobrevive al control por volatilidad implícita. Como γ&nbsp;∝&nbsp;1/σ por construcción y σ
+    es persistente, <b>Γ «predice» la volatilidad futura porque es una función de la
+    volatilidad presente</b>. En esta muestra no hay evidencia de un canal de cobertura
+    separable del artefacto de la fórmula.</p>
+  </div>
+
+  <div class="note" style="margin-top:24px">
+    <span class="eyebrow">El hilo que sí sobrevive</span>
+    <p>El paper afirma que la señal vive en contratos <span class="mono">slow</span> (más de
+    31 días). Testeado por separado: <span class="mono">slow</span> da t&nbsp;=&nbsp;−6,52 y
+    <span class="mono">fast</span> es nulo (t&nbsp;=&nbsp;−0,22), justo como predice. Y
+    <span class="mono">slow</span> ortogonalizado a IV <b>mantiene t&nbsp;=&nbsp;−2,66 con el
+    signo correcto</b>.</p>
+    <p>Tres reservas antes de entusiasmarse: se probaron ~15 especificaciones, y un t de −2,66
+    entre quince no vale lo que uno aislado; el componente OTM sale con t&nbsp;=&nbsp;+4,24 y el
+    <em>signo contrario</em> al que el paper predice, lo que sugiere un problema en la
+    descomposición; y esto es una hipótesis para testear con datos nuevos, no un hallazgo.</p>
+  </div>
+</section>
+
+<section id="backtest">
+  <div class="shead"><div class="snum">05</div><div>
+    <h2>Qué habría rendido</h2></div></div>
+  <p>Sin mecanismo confirmado, los retornos son descriptivos, no evidencia. Se reportan
+  igual, porque la forma de las curvas cuenta algo que las regresiones no.</p>
+
+  <figure>
+    <div class="ftitle">Curvas de capital, netas de costos</div>
+    <div class="fsub">Base 100 · septiembre 2021 a agosto 2026 · incluye comisión, spread y costo de préstamo</div>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--teal)"></i>L-S neutral (beta y sector)</span>
+      <span><i class="sw" style="background:var(--brick)"></i>L-S semanal (original)</span>
+      <span><i class="sw d"></i>SPY</span>
+      <span><i class="sw" style="background:var(--ref-2)"></i>30 nombres equiponderados</span>
+    </div>
+    <div class="scroll"><div id="c-equity"></div></div>
+    <figcaption>Comprar las mismas 30 acciones y no hacer nada terminó en 197,7. La mejor
+    versión de la estrategia terminó en 168,8 — prácticamente empatada con SPY (169,8).
+    <b>La estrategia le perdió a sostener los activos que usa.</b> Fíjese en 2022: es el
+    único tramo donde las curvas se separan a favor.</figcaption>
+  </figure>
+
+  <div class="two" style="margin-top:22px">
+    <figure>
+      <div class="ftitle">Retorno por año</div>
+      <div class="fsub">Neto de costos, %</div>
+      <div class="scroll"><div id="c-anual"></div></div>
+      <figcaption>La neutral <b>nunca tuvo un año negativo</b>, pero solo gana claramente
+      en 2022. 2021 y 2026 son años parciales.</figcaption>
+    </figure>
+    <figure>
+      <div class="ftitle">Bajo el agua</div>
+      <div class="fsub">Caída desde máximo previo, %</div>
+      <div class="scroll"><div id="c-dd"></div></div>
+      <figcaption>La neutral toca −18,2 % contra −53,1 % de la versión semanal y −50,0 %
+      de la canasta.</figcaption>
+    </figure>
+  </div>
+
+  <figure>
+    <div class="ftitle">Retorno mensual, L-S neutral</div>
+    <div class="fsub">60 meses · verde gana, rojo pierde · pase el cursor para el valor exacto</div>
+    <div class="scroll"><div id="c-heat"></div></div>
+    <figcaption>Distribución sin rachas largas de pérdida, pero también sin meses
+    excepcionales: 60 % de meses positivos, y el mejor apenas supera el +8 %. Es el perfil
+    de una estrategia de baja convicción, no de una con ventaja.</figcaption>
+  </figure>
+
+  <h3 style="margin-top:44px">El diseño de rebalanceo importa más que la señal</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>Diseño</th><th>Ret. anual neto</th><th>Vol</th><th>Sharpe</th><th>Max DD</th><th>Turnover</th></tr></thead>
+    <tbody>
+      <tr><td>L-S semanal</td><td class="num">7,25 %</td><td class="num">33,2 %</td><td class="num">0,21</td><td class="num neg">−53,1 %</td><td class="num">147 %/sem</td></tr>
+      <tr><td>L-S mensual (diseño del paper)</td><td class="num">15,16 %</td><td class="num">32,6 %</td><td class="num">0,43</td><td class="num neg">−49,7 %</td><td class="num">52 %</td></tr>
+      <tr class="hi"><td>L-S neutral por beta y sector</td><td class="num">12,59 %</td><td class="num">15,7 %</td><td class="num">0,75</td><td class="num">−18,2 %</td><td class="num">192 %</td></tr>
+      <tr><td>Long-only tilt</td><td class="num">35,33 %</td><td class="num">63,9 %</td><td class="num">0,48</td><td class="num neg">−82,5 %</td><td class="num">149 %/sem</td></tr>
+      <tr><td>— 30 nombres equiponderados</td><td class="num">18,02 %</td><td class="num">25,3 %</td><td class="num">0,66</td><td class="num neg">−50,0 %</td><td class="num">—</td></tr>
+      <tr><td>— SPY</td><td class="num">12,27 %</td><td class="num">16,1 %</td><td class="num">0,72</td><td class="num">−24,8 %</td><td class="num">—</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note warn" style="margin-top:22px">
+    <span class="eyebrow">Una variante que hay que descartar</span>
+    <p>Añadir una banda de tolerancia de 6 posiciones al rebalanceo mensual sube el retorno
+    de 15,2 % a 39,6 % anual. Con 60 rebalanceos y la volatilidad subiendo en paralelo, eso
+    es la muestra siendo torturada por un parámetro de implementación, no un hallazgo. No se
+    reporta como resultado.</p>
+  </div>
+</section>
+
+<section id="cartera">
+  <div class="shead"><div class="snum">06</div><div>
+    <h2>Qué compraba y qué vendía</h2></div></div>
+  <p>60 rebalanceos mensuales, seis nombres por pata. La composición confirma desde otro
+  ángulo lo que mostró el gráfico de Γ contra IV.</p>
+
+  <figure>
+    <div class="ftitle">Frecuencia en cada pata</div>
+    <div class="fsub">Número de los 60 rebalanceos en que cada acción apareció · barras a la izquierda = pata larga</div>
+    <div class="scroll"><div id="c-comp"></div></div>
+    <figcaption>La separación es casi perfecta y casi permanente: los nombres volátiles
+    (RIVN, MU, AMD, CRM) viven en la pata larga; los defensivos y mega-caps de IV baja
+    (KO, AAPL, PG, WMT, CVX) en la corta. Muy pocas acciones cruzan de lado.</figcaption>
+  </figure>
+
+  <div class="stats">
+    <div class="stat"><div class="k">Rotación pata larga</div><div class="v">55,6 %</div>
+      <div class="s">media por rebalanceo</div></div>
+    <div class="stat"><div class="k">Rotación pata corta</div><div class="v">54,0 %</div>
+      <div class="s">media por rebalanceo</div></div>
+    <div class="stat"><div class="k">Más veces largo</div><div class="v">RIVN</div>
+      <div class="s">25 de 60 rebalanceos</div></div>
+    <div class="stat"><div class="k">Más veces corto</div><div class="v">KO</div>
+      <div class="s">32 de 60 rebalanceos</div></div>
+  </div>
+  <p style="margin-top:24px">Más de la mitad de cada pata cambia cada mes, pero el
+  <em>tipo</em> de acción no cambia: rota entre volátiles, no entre estilos. Eso explica el
+  turnover del 192 % con una exposición de fondo que apenas se mueve — y por qué el costo
+  de transacción se come 12,6 puntos de retorno en el periodo.</p>
+</section>
+
+<section id="riesgo">
+  <div class="shead"><div class="snum">07</div><div>
+    <h2>Riesgo y comportamiento en crisis</h2></div></div>
+  <p>Aquí está el único argumento genuinamente favorable de todo el estudio, y también su
+  límite.</p>
+
+  <div class="scroll"><table>
+    <thead><tr><th>Cartera</th><th>VaR 95 %</th><th>CVaR 95 %</th><th>VaR 99 %</th><th>CVaR 99 %</th><th>Peor semana</th><th>Vol anual</th></tr></thead>
+    <tbody>
+      <tr class="hi"><td>L-S neutral</td><td class="num">−2,78 %</td><td class="num">−4,09 %</td><td class="num">−4,92 %</td><td class="num">−5,89 %</td><td class="num">−7,41 %</td><td class="num">15,7 %</td></tr>
+      <tr><td>SPY</td><td class="num">−3,06 %</td><td class="num">−4,60 %</td><td class="num">−5,38 %</td><td class="num">−6,99 %</td><td class="num">−9,07 %</td><td class="num">16,1 %</td></tr>
+      <tr><td>30 nombres equiponderados</td><td class="num">−5,46 %</td><td class="num">−7,46 %</td><td class="num">−9,18 %</td><td class="num">−9,92 %</td><td class="num">−10,97 %</td><td class="num">25,3 %</td></tr>
+      <tr><td>L-S semanal</td><td class="num">−6,39 %</td><td class="num">−9,34 %</td><td class="num">−11,18 %</td><td class="num">−15,08 %</td><td class="num">−18,58 %</td><td class="num">33,3 %</td></tr>
+    </tbody>
+  </table></div>
+  <p style="margin-top:14px;font-size:.88rem;color:var(--ink-3);max-width:74ch">El CVaR es la
+  pérdida media <em>dentro</em> de la cola, no donde empieza: es la cifra que importa para
+  dimensionar. La neutral tiene cola algo más benigna que SPY con volatilidad equivalente.</p>
+
+  <figure>
+    <div class="ftitle">2022: el único episodio de estrés real de la muestra</div>
+    <div class="fsub">S&amp;P −19 % en el año · retorno del periodo, %</div>
+    <div class="scroll"><div id="c-stress"></div></div>
+    <figcaption>Durante la caída de enero a octubre de 2022 la neutral hizo <b>+25,1 %</b>
+    mientras SPY perdía 23,8 % y la canasta de 30 nombres se hundía 46,8 %. Un diferencial
+    de casi 49 puntos contra el índice. En el resto de la muestra la relación se invierte:
+    9,1 % anual contra 20,1 % de SPY.</figcaption>
+  </figure>
+
+  <div class="note warn">
+    <span class="eyebrow">Por qué esto no es una cobertura</span>
+    <p>El comportamiento semanal lo desmiente. En las 15 semanas con SPY por debajo de −3 %,
+    la neutral <b>también perdió</b> (−1,18 % en media), y su beta en semanas de caída es
+    <b>+0,20</b> — positiva. No protege en los golpes: simplemente tiene beta baja. La
+    ganancia de 2022 vino del spread cross-seccional acumulado a lo largo del año, no de
+    amortiguar las caídas.</p>
+  </div>
+
+  <figure>
+    <div class="ftitle">Bootstrap por bloques</div>
+    <div class="fsub">10 000 simulaciones · bloques geométricos de 8 semanas para conservar los clusters de volatilidad</div>
+    <div class="scroll"><table>
+      <thead><tr><th>Cartera</th><th>Ret. medio</th><th>IC 90 %</th><th>P(pérdida)</th><th>DD mediano</th><th>P(gana a SPY)</th></tr></thead>
+      <tbody>
+        <tr class="hi"><td>L-S neutral</td><td class="num">11,01 %</td><td class="num">−0,2 % · +23,2 %</td><td class="num">5,4 %</td><td class="num">−19,9 %</td><td class="num">48,8 %</td></tr>
+        <tr><td>SPY</td><td class="num">11,16 %</td><td class="num">+0,1 % · +22,3 %</td><td class="num">4,9 %</td><td class="num">−21,8 %</td><td>—</td></tr>
+        <tr><td>30 nombres EW</td><td class="num">14,91 %</td><td class="num">−6,0 % · +36,6 %</td><td class="num">12,6 %</td><td class="num">−37,1 %</td><td class="num">59,7 %</td></tr>
+        <tr><td>L-S semanal</td><td class="num">2,39 %</td><td class="num">−20,0 % · +28,9 %</td><td class="num">46,2 %</td><td class="num">−53,4 %</td><td class="num">27,9 %</td></tr>
+      </tbody>
+    </table></div>
+    <figcaption>El bootstrap remuestrea las 265 semanas observadas: mide incertidumbre
+    muestral, <b>no</b> simula crisis ausentes de los datos. La neutral tiene
+    <b>48,8 % de probabilidad</b> de superar a SPY — indistinguible de una moneda.</figcaption>
+  </figure>
+</section>
+
+<section id="conclusion">
+  <div class="shead"><div class="snum">08</div><div>
+    <h2>Conclusión</h2></div></div>
+
+  <p><b>El canal de cobertura no se confirma en mega-caps líquidas en este régimen.</b> La
+  relación cruda entre Γ y volatilidad futura es fuerte y replica la estructura del paper con
+  precisión — incluida la separación entre el componente de cobertura (t = −4,05) y el de
+  información privada (no significativo). Pero desaparece al controlar por volatilidad
+  implícita, y la razón es aritmética antes que económica: γ ∝ 1/σ por construcción.</p>
+
+  <p>Según el criterio del propio plan del proyecto, esto es un <b>NO-GO para escalar a
+  500-1 000 nombres</b>. El hallazgo es el resultado, y ahorra el costo del build completo.</p>
+
+  <h3 style="margin-top:36px">Lo que queda en pie</h3>
+  <div class="gates">
+    <div class="gate"><div class="g-id">ACTIVO</div>
+      <div><div class="g-name">Cinco años de datos limpios y validados</div>
+      <div class="g-det">267 fechas semanales, OI presente en el 100 % de los días, equities con error de 0,0000 % contra Databento. La próxima hipótesis se prueba en horas.</div></div>
+      <div class="chip ok">REUTILIZABLE</div></div>
+    <div class="gate"><div class="g-id">ACTIVO</div>
+      <div><div class="g-name">La neutralización por beta y sector</div>
+      <div class="g-det">Sharpe 0,43 → 0,75 y drawdown −49,7 % → −18,2 % sobre la misma señal. Es ingeniería de riesgo transferible a cualquier otra estrategia long-short.</div></div>
+      <div class="chip ok">REUTILIZABLE</div></div>
+    <div class="gate"><div class="g-id">ABIERTO</div>
+      <div><div class="g-name">El componente <span class="mono">slow</span> ortogonalizado</div>
+      <div class="g-det">t = −2,66 tras quitar la IV, con el signo correcto y <span class="mono">fast</span> nulo, como predice el paper. Pero entre ~15 especificaciones, y con el OTM saliendo con signo invertido.</div></div>
+      <div class="chip mid">HIPÓTESIS</div></div>
+    <div class="gate"><div class="g-id">ABIERTO</div>
+      <div><div class="g-name">El comportamiento en 2022</div>
+      <div class="g-det">+25,1 % durante la caída, contra −23,8 % de SPY. Pero n = 1 recesión, y coincide con el año en que la señal se comportó de forma anómala.</div></div>
+      <div class="chip mid">HIPÓTESIS</div></div>
+  </div>
+
+  <h3 style="margin-top:40px">Lo que no se puede afirmar</h3>
+  <ul style="max-width:70ch;color:var(--ink-2);padding-left:1.15em">
+    <li style="margin-bottom:8px">Que el paper esté equivocado. Su muestra es 1996-2021 con miles de acciones; esta es 2021-2026 con 30 mega-caps. Son universos y regímenes distintos.</li>
+    <li style="margin-bottom:8px">Que la crítica del control por IV le aplique al paper. Habría que verificar si su Tabla 13 lo incluye — no se asumió.</li>
+    <li style="margin-bottom:8px">Que la estrategia genere alfa. 60 meses no dan potencia: el intervalo del retorno anual va de −0,2 % a +23,2 %.</li>
+    <li>Que el comportamiento de 2022 se repita. Una observación no distingue mecanismo de casualidad.</li>
+  </ul>
+
+  <h3 style="margin-top:40px">Siguiente paso recomendado</h3>
+  <p>No optimizar esta señal. Con 267 semanas, buscar parámetros hasta que el Sharpe mejore
+  produce números que no sobreviven fuera de muestra — la variante de «banda 6» es la
+  demostración. Lo que falta no es otro test sobre los mismos datos, sino <b>más regímenes o
+  más nombres</b>. Mientras tanto, la infraestructura está construida y pagada: probar una
+  señal distinta sobre estos mismos cinco años cuesta horas, no semanas.</p>
+</section>
+
+</div>
+
+<footer><div class="wrap">
+  <p><b>Metodología.</b> Datos OPRA.PILLAR vía Databento (definition, statistics, cbbo-1m);
+  subyacentes de EQUS.SUMMARY y yfinance des-ajustado por split; curva del Tesoro de FRED.
+  Valuación con árbol Cox-Ross-Rubinstein americano de 400 pasos, IV invertida del mid del
+  NBBO en la ventana 15:55-16:00 ET. Regresiones Fama-MacBeth con errores Newey-West de 4
+  rezagos. Costos: medio spread, comisión y costo de préstamo estimado del carry implícito.
+  Todas las cifras son netas salvo indicación contraria.</p>
+  <p style="margin-top:14px"><b>Reproducibilidad.</b> <span class="mono">run_senal.py</span> ·
+  <span class="mono">run_sensibilidad.py</span> · <span class="mono">run_mecanismo.py</span> ·
+  <span class="mono">run_mecanismo_fm.py</span> · <span class="mono">run_ortogonal.py</span> ·
+  <span class="mono">run_riesgo.py</span> · <span class="mono">run_backtest*.py</span>.
+  Reportes crudos en <span class="mono">reports/</span>.</p>
+</div></footer>
+<div class="tip" id="tip"></div>
+<script>
+const D = {"curvas":{"f":["2021-09-03","2021-09-10","2021-09-24","2021-10-08","2021-10-22","2021-11-05","2021-11-19","2021-12-03","2021-12-17","2021-12-31","2022-01-14","2022-01-28","2022-02-11","2022-02-25","2022-03-11","2022-03-25","2022-04-08","2022-04-22","2022-05-06","2022-05-20","2022-06-03","2022-06-17","2022-07-01","2022-07-15","2022-07-29","2022-08-12","2022-08-26","2022-09-02","2022-09-16","2022-09-30","2022-10-14","2022-10-28","2022-11-11","2022-11-25","2022-12-09","2022-12-23","2023-01-06","2023-01-20","2023-02-03","2023-02-17","2023-03-03","2023-03-17","2023-03-31","2023-04-14","2023-04-28","2023-05-12","2023-05-26","2023-06-09","2023-06-23","2023-07-07","2023-07-21","2023-08-04","2023-08-18","2023-08-31","2023-09-08","2023-09-22","2023-10-06","2023-10-20","2023-11-03","2023-11-17","2023-12-01","2023-12-15","2023-12-29","2024-01-12","2024-01-26","2024-02-09","2024-02-23","2024-03-08","2024-03-22","2024-04-05","2024-04-19","2024-05-03","2024-05-17","2024-05-31","2024-06-14","2024-06-28","2024-07-12","2024-07-26","2024-08-09","2024-08-23","2024-09-06","2024-09-20","2024-10-04","2024-10-18","2024-11-01","2024-11-15","2024-11-29","2024-12-13","2024-12-27","2025-01-10","2025-01-24","2025-02-07","2025-02-21","2025-03-07","2025-03-21","2025-04-04","2025-04-17","2025-05-02","2025-05-16","2025-05-30","2025-06-13","2025-06-27","2025-07-11","2025-07-25","2025-08-08","2025-08-22","2025-09-02","2025-09-04","2025-09-12","2025-09-26","2025-10-10","2025-10-24","2025-11-07","2025-11-21","2025-12-05","2025-12-19","2026-01-02","2026-01-16","2026-01-30","2026-02-13","2026-02-27","2026-03-13","2026-03-27","2026-04-10","2026-04-23","2026-05-07","2026-05-22","2026-06-04","2026-06-18","2026-07-02","2026-07-16","2026-07-31","2026-08-14","2026-08-20"],"ls":[98.8,98.7,94.1,93.0,89.4,97.8,98.2,94.1,97.1,86.5,72.2,72.1,69.5,66.4,70.2,65.2,61.5,55.7,49.2,46.5,52.9,52.1,62.2,84.0,90.9,84.4,80.6,79.7,80.4,79.5,86.5,76.2,77.4,79.2,75.9,71.5,79.5,83.0,87.0,92.5,91.6,91.3,86.6,87.0,87.6,86.8,88.6,89.4,93.1,92.8,95.4,89.7,90.4,92.5,95.3,93.9,93.4,95.2,88.5,90.6,98.0,101.1,98.4,95.0,95.9,107.2,114.4,105.5,107.2,101.9,96.9,100.7,99.6,110.3,105.6,111.2,120.2,111.7,114.6,113.4,114.5,117.5,122.5,125.7,119.2,114.5,121.3,116.2,120.1,127.8,124.3,124.6,116.0,119.6,118.6,110.1,113.2,113.6,108.8,115.9,120.1,111.8,113.5,109.5,110.8,113.0,112.2,114.6,116.3,119.0,124.1,129.4,128.0,103.2,102.4,99.2,99.3,99.4,83.9,83.4,83.1,84.7,84.5,83.2,84.7,83.0,81.8,87.0,84.7,89.1,92.0,99.6,107.2,106.0],"neutral":[99.9,100.2,103.5,103.8,107.2,114.0,113.8,112.2,111.5,105.5,105.0,106.7,104.7,107.3,113.6,106.9,105.8,102.4,101.0,95.4,95.7,95.8,98.2,116.0,121.6,117.5,120.5,119.7,120.3,122.4,126.5,121.8,126.6,122.3,120.4,119.0,124.7,125.9,125.4,124.9,121.2,121.1,118.2,118.0,116.4,120.0,124.4,126.2,127.2,131.2,133.0,133.0,131.8,133.8,134.1,135.1,131.0,137.0,133.2,138.0,138.8,143.0,141.4,138.1,141.1,152.3,154.9,154.1,149.9,147.9,146.7,143.9,146.4,142.4,138.1,136.0,141.6,134.2,140.6,141.4,143.4,143.4,141.7,141.7,142.7,145.3,145.0,144.5,147.1,150.4,143.8,139.1,140.2,141.1,138.8,135.5,133.2,135.6,137.2,141.8,144.8,146.0,147.6,144.8,147.8,151.0,150.0,152.0,155.9,155.5,158.9,164.4,160.3,149.3,148.7,152.1,150.2,151.2,139.8,139.0,143.4,149.1,151.5,152.0,153.6,149.6,158.6,162.0,165.5,164.9,160.1,163.7,169.7,168.8],"bench":[97.6,97.8,97.1,101.7,105.8,109.7,105.2,102.2,102.7,99.4,89.1,90.1,87.4,83.5,87.7,91.1,84.3,74.6,69.5,72.6,65.6,66.5,64.4,64.4,70.2,68.5,62.0,64.7,57.0,56.8,59.7,59.8,61.1,63.2,57.2,55.6,61.4,66.7,67.2,65.5,62.3,67.4,68.8,69.0,70.1,73.1,78.1,81.0,82.0,87.2,89.2,84.6,81.7,85.6,85.2,81.8,80.9,76.7,85.1,88.7,92.6,98.3,95.2,95.3,99.2,104.6,107.4,107.8,111.0,107.2,106.4,108.1,112.3,115.9,111.6,116.8,117.5,108.2,112.3,113.2,111.6,117.5,120.2,122.5,131.5,138.6,144.1,139.8,140.7,142.8,143.0,148.4,137.3,128.8,128.6,122.8,133.1,138.1,145.7,149.1,151.3,160.2,163.7,159.0,166.4,166.7,166.7,167.3,177.0,176.8,177.4,184.1,176.5,170.3,174.4,176.9,178.4,177.3,170.9,169.7,169.8,165.1,165.2,178.0,184.3,184.3,190.9,182.9,179.2,186.0,181.3,189.7,193.5,197.7],"spy":[98.3,97.4,95.8,98.4,101.4,103.1,101.3,103.9,103.9,102.9,96.7,99.0,95.8,95.4,98.1,100.0,96.6,90.9,88.7,91.7,86.0,86.1,85.8,87.2,91.3,93.2,87.2,89.7,81.2,80.1,82.6,83.1,87.4,89.8,84.6,84.4,88.0,89.5,90.1,87.5,85.2,87.3,90.3,91.0,91.1,92.4,94.5,97.0,97.8,99.2,100.8,98.4,97.1,99.6,97.9,94.3,95.2,90.6,97.2,100.5,101.6,104.5,103.3,106.5,109.1,110.2,113.2,112.5,115.5,112.8,112.2,115.0,116.8,117.9,120.2,122.4,121.2,117.6,122.3,124.4,124.0,126.1,127.9,127.8,132.0,131.4,134.2,130.5,130.7,131.9,132.8,134.6,131.1,124.2,122.6,117.8,121.5,124.6,127.8,132.2,131.2,138.0,138.5,137.2,142.0,142.4,142.1,142.8,146.5,147.7,146.6,150.5,148.3,150.0,150.5,152.4,153.2,152.1,152.4,152.2,148.4,143.2,144.8,154.5,159.1,163.1,167.0,162.8,160.9,165.9,162.9,169.6,168.3,169.8]},"dd":{"ls":[0.0,-0.1,-4.7,-5.9,-9.5,-1.0,-1.2,-5.2,-2.3,-13.0,-27.3,-27.4,-30.0,-33.2,-29.4,-34.4,-38.1,-44.0,-50.5,-53.1,-46.8,-47.6,-37.4,-15.4,-8.5,-15.1,-18.9,-19.7,-19.1,-20.0,-13.0,-23.3,-22.1,-20.3,-23.6,-28.1,-20.0,-16.5,-12.4,-6.8,-7.8,-8.1,-12.8,-12.4,-11.8,-12.7,-10.8,-10.0,-6.3,-6.6,-4.0,-9.8,-9.0,-6.8,-4.0,-5.5,-6.0,-4.2,-11.0,-8.8,-1.3,0.0,-3.3,-6.7,-5.8,0.0,0.0,-7.8,-6.3,-10.9,-15.2,-12.0,-12.9,-3.6,-7.7,-2.8,-1.4,-8.4,-6.0,-7.0,-6.1,-3.6,0.0,0.0,-5.2,-8.9,-3.5,-7.5,-4.4,0.0,-2.8,-2.5,-9.3,-6.5,-7.2,-13.9,-11.5,-11.2,-14.9,-9.3,-6.1,-12.6,-11.2,-14.3,-13.3,-11.6,-12.2,-10.3,-9.1,-6.9,-2.9,0.0,-1.1,-20.2,-20.9,-23.4,-23.3,-23.2,-35.1,-35.6,-35.8,-34.6,-34.7,-35.7,-34.6,-35.9,-36.8,-32.8,-34.6,-31.2,-28.9,-23.1,-17.2,-18.1],"neutral":[0.0,0.0,-0.9,-0.7,0.0,0.0,-0.8,-2.2,-2.8,-8.0,-8.4,-7.0,-8.7,-6.5,-1.0,-6.8,-7.8,-10.7,-11.9,-16.8,-16.6,-16.5,-14.4,0.0,0.0,-3.4,-0.9,-1.5,-1.0,0.0,0.0,-3.7,-3.1,-6.4,-7.8,-8.9,-4.5,-3.6,-4.0,-4.4,-7.2,-7.3,-9.5,-9.7,-10.9,-8.2,-4.8,-3.4,-2.6,0.0,0.0,-1.2,-2.1,-0.7,-0.4,0.0,-3.0,0.0,-2.7,-1.2,-1.5,0.0,-1.6,-3.9,-1.8,0.0,0.0,-1.6,-4.3,-5.5,-6.3,-8.1,-6.5,-9.1,-11.8,-13.2,-9.5,-14.2,-10.2,-9.7,-8.4,-8.4,-9.5,-9.5,-8.8,-7.2,-7.4,-7.7,-6.1,-3.9,-8.1,-11.2,-10.5,-9.9,-11.4,-13.5,-14.9,-13.4,-12.4,-9.4,-7.5,-6.8,-5.7,-7.5,-5.6,-3.5,-4.2,-2.9,-0.4,-0.7,0.0,0.0,-2.5,-9.2,-9.6,-7.5,-8.6,-8.1,-15.0,-15.5,-12.8,-9.3,-7.9,-7.6,-6.6,-9.0,-3.5,-1.5,0.0,-0.6,-3.5,-1.4,0.0,-0.5],"bench":[0.0,0.0,-2.0,0.0,0.0,-0.6,-4.7,-7.3,-6.9,-9.9,-19.3,-18.3,-20.8,-24.3,-20.5,-17.5,-23.6,-32.4,-37.0,-34.2,-40.6,-39.7,-41.7,-41.6,-36.4,-38.0,-43.8,-41.4,-48.4,-48.5,-45.9,-45.8,-44.6,-42.7,-48.1,-49.6,-44.3,-39.6,-39.1,-40.7,-43.5,-39.0,-37.6,-37.5,-36.5,-33.7,-29.2,-26.6,-25.7,-21.0,-19.2,-23.3,-25.9,-22.4,-22.8,-25.9,-26.6,-30.5,-22.9,-19.6,-16.1,-10.9,-13.8,-13.6,-10.1,-5.2,-2.7,-2.3,0.0,-3.4,-4.2,-2.6,-0.3,0.0,-3.7,0.0,-0.6,-8.5,-5.0,-4.3,-5.6,-0.7,0.0,0.0,0.0,0.0,0.0,-3.0,-2.4,-0.9,-1.4,0.0,-7.5,-13.2,-13.3,-17.3,-10.3,-7.0,-2.6,-0.4,0.0,0.0,0.0,-3.7,0.0,-0.3,-0.2,-0.3,0.0,-0.1,0.0,0.0,-4.1,-7.5,-5.2,-3.9,-3.1,-3.7,-7.1,-7.8,-7.8,-10.3,-10.3,-3.3,0.0,-0.5,0.0,-4.2,-6.1,-2.6,-5.0,-0.6,-0.1,0.0],"spy":[0.0,-0.9,-2.5,0.0,0.0,-0.3,-2.1,0.0,-0.0,-1.9,-7.8,-5.5,-8.6,-9.0,-6.4,-4.7,-7.8,-13.3,-15.4,-12.6,-17.9,-17.9,-18.2,-16.8,-12.9,-11.1,-16.8,-14.4,-22.5,-23.6,-21.2,-20.8,-16.6,-14.3,-19.3,-19.5,-16.1,-14.6,-14.1,-16.5,-18.8,-16.7,-13.8,-13.2,-13.1,-11.9,-9.9,-7.5,-6.7,-5.4,-3.8,-6.2,-7.4,-5.0,-6.7,-10.0,-9.2,-13.5,-7.2,-4.1,-3.1,-0.3,-1.6,0.0,0.0,-0.3,0.0,-0.6,0.0,-2.3,-2.8,-0.4,-0.0,0.0,0.0,0.0,-2.0,-4.8,-1.0,0.0,-0.3,0.0,0.0,-0.9,0.0,-0.5,0.0,-2.7,-2.6,-1.7,-1.0,0.0,-2.5,-7.7,-8.9,-12.4,-9.7,-7.4,-5.0,-1.7,-2.5,0.0,0.0,-2.4,0.0,-0.0,-0.2,-0.3,0.0,0.0,-0.7,0.0,-1.5,-0.3,-0.6,0.0,0.0,-0.7,-0.5,-0.7,-3.1,-6.5,-5.5,0.0,0.0,0.0,0.0,-2.6,-3.7,-0.7,-2.5,0.0,-1.8,-0.9]},"mensual":{"meses":["2021-09","2021-10","2021-11","2021-12","2022-01","2022-02","2022-03","2022-04","2022-05","2022-06","2022-07","2022-08","2022-09","2022-10","2022-11","2022-12","2023-01","2023-02","2023-03","2023-04","2023-05","2023-06","2023-07","2023-08","2023-09","2023-10","2023-11","2023-12","2024-01","2024-02","2024-03","2024-04","2024-05","2024-06","2024-07","2024-08","2024-09","2024-10","2024-11","2024-12","2025-01","2025-02","2025-03","2025-04","2025-05","2025-06","2025-07","2025-08","2025-09","2025-10","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05","2026-06","2026-07","2026-08"],"ls":[-5.86,-0.79,3.77,-10.8,-16.56,-8.01,-1.71,-18.65,-9.39,24.15,52.31,-12.44,-0.1,-4.22,4.03,-7.09,19.51,6.77,-7.76,1.15,1.14,6.58,-1.94,-0.11,0.27,4.2,1.35,0.44,-2.52,19.23,-9.48,-1.53,8.15,0.86,0.41,-2.84,10.91,1.37,-0.56,-0.95,2.84,-5.71,-4.51,0.41,3.79,-3.57,-2.04,2.17,6.38,8.47,-20.77,-2.98,-15.42,-0.95,1.69,0.17,-0.52,5.4,12.13,6.46],"neutral":[3.46,6.55,3.12,-7.15,1.05,0.61,-0.34,-4.77,-5.02,2.34,22.85,-0.3,0.97,-0.44,0.39,-0.16,5.14,-3.3,-4.81,-1.51,6.88,4.16,3.93,-0.69,-0.84,2.63,3.46,0.42,-0.25,9.8,-4.96,-0.55,-2.76,-4.48,-1.27,2.41,3.44,-0.38,2.33,1.43,-3.29,-2.25,-2.84,-0.92,5.98,2.95,-0.8,4.2,3.02,3.8,-7.99,1.46,-7.22,2.6,5.65,1.4,5.18,2.69,-1.35,3.14],"bench":[-2.88,13.62,-9.33,-0.68,-9.3,-7.32,9.02,-19.36,-1.73,-16.34,16.21,-13.39,-6.46,5.17,5.76,-10.45,23.17,-3.68,2.49,1.88,11.32,6.3,4.81,-1.54,-4.93,3.24,8.92,3.93,4.22,8.27,1.76,-0.75,6.85,0.83,-7.41,-1.73,10.75,2.25,19.71,-2.36,2.2,-8.41,-13.05,19.85,8.64,7.43,-0.75,4.66,6.26,1.2,-2.0,0.03,-2.52,-0.7,-2.71,11.57,2.62,-1.77,2.12,4.2],"spy":[-4.16,7.9,-3.22,2.79,-3.73,-3.68,4.8,-9.18,-0.19,-7.14,8.45,-5.13,-7.51,3.74,8.12,-4.63,6.25,-1.98,1.24,0.84,3.71,2.48,1.88,0.98,-4.8,1.2,5.62,1.92,5.65,3.74,1.09,-1.38,4.44,3.86,-3.92,1.4,6.04,-0.34,6.44,-2.61,1.49,-4.14,-12.27,12.17,5.71,4.37,-0.58,2.98,4.52,0.26,2.19,-0.37,1.09,-2.64,-2.46,9.88,5.06,-1.63,3.19,0.1]},"anual":{"anios":[2021,2022,2023,2024,2025,2026],"n":[18,53,53,52,55,34],"ls":[-13.55,-14.86,33.71,22.07,-17.39,6.81],"neutral":[5.54,15.71,15.8,3.99,2.45,12.07],"bench":[-0.63,-43.02,68.07,47.85,24.64,12.7],"spy":[2.87,-16.74,20.57,26.51,15.41,12.61]},"frec":{"largo":{"RIVN":25,"MU":24,"CAT":22,"CRM":19,"BA":18,"AMD":18,"PLTR":16,"NFLX":15,"UBER":15,"COIN":15,"TSLA":15,"CVX":14,"BAC":14,"DIS":14,"PG":13,"SHOP":12,"GS":12,"JPM":12,"SOFI":11,"WMT":10,"MSTR":9,"AMZN":8,"GOOGL":7,"GME":5,"XOM":4,"META":4,"MSFT":3,"KO":3,"AAPL":2,"NVDA":1},"corto":{"KO":32,"AAPL":27,"PG":25,"WMT":25,"CVX":24,"JPM":24,"MSFT":23,"GS":23,"XOM":23,"GME":20,"META":18,"AMZN":14,"GOOGL":14,"BA":13,"NFLX":11,"DIS":10,"MSTR":6,"CAT":5,"BAC":4,"UBER":4,"SHOP":3,"COIN":3,"CRM":2,"RIVN":2,"PLTR":2,"TSLA":2,"SOFI":1},"n_rebal":60},"gamma_anual":{"anios":[2021,2022,2023,2024,2025,2026],"pct_neg":[17.3,48.5,21.1,12.2,12.7,19.8],"mediana":[0.0253,0.0003,0.0147,0.0267,0.0228,0.0178],"iv":[0.349,0.431,0.371,0.347,0.364,0.394],"net_gross":[0.209,0.137,0.179,0.266,0.247,0.222]},"por_ticker":[{"t":"MU","gex":0.004,"iv":0.507,"adv_M":5526,"ng":0.208},{"t":"RIVN","gex":0.0048,"iv":0.777,"adv_M":636,"ng":0.186},{"t":"AMD","gex":0.0061,"iv":0.521,"adv_M":8274,"ng":0.167},{"t":"PLTR","gex":0.0094,"iv":0.647,"adv_M":3698,"ng":0.224},{"t":"SOFI","gex":0.0096,"iv":0.72,"adv_M":686,"ng":0.239},{"t":"SHOP","gex":0.0108,"iv":0.574,"adv_M":1099,"ng":0.216},{"t":"CRM","gex":0.011,"iv":0.383,"adv_M":1749,"ng":0.19},{"t":"TSLA","gex":0.0114,"iv":0.588,"adv_M":25746,"ng":0.172},{"t":"CAT","gex":0.0125,"iv":0.336,"adv_M":1041,"ng":0.194},{"t":"COIN","gex":0.013,"iv":0.798,"adv_M":1850,"ng":0.242},{"t":"BAC","gex":0.015,"iv":0.309,"adv_M":1699,"ng":0.192},{"t":"MSTR","gex":0.0155,"iv":0.894,"adv_M":2196,"ng":0.265},{"t":"UBER","gex":0.0163,"iv":0.454,"adv_M":1272,"ng":0.219},{"t":"NVDA","gex":0.017,"iv":0.507,"adv_M":24322,"ng":0.233},{"t":"DIS","gex":0.0187,"iv":0.313,"adv_M":1231,"ng":0.165},{"t":"BA","gex":0.0201,"iv":0.373,"adv_M":1523,"ng":0.177},{"t":"NFLX","gex":0.0209,"iv":0.42,"adv_M":3026,"ng":0.171},{"t":"GS","gex":0.0305,"iv":0.308,"adv_M":1182,"ng":0.194},{"t":"PG","gex":0.0315,"iv":0.211,"adv_M":1139,"ng":0.25},{"t":"CVX","gex":0.0321,"iv":0.281,"adv_M":1466,"ng":0.252},{"t":"AMZN","gex":0.0332,"iv":0.362,"adv_M":8968,"ng":0.247},{"t":"XOM","gex":0.0333,"iv":0.289,"adv_M":1995,"ng":0.259},{"t":"WMT","gex":0.0366,"iv":0.252,"adv_M":1491,"ng":0.227},{"t":"GOOGL","gex":0.0369,"iv":0.339,"adv_M":5662,"ng":0.25},{"t":"JPM","gex":0.0373,"iv":0.285,"adv_M":2040,"ng":0.236},{"t":"GME","gex":0.0391,"iv":0.929,"adv_M":297,"ng":0.339},{"t":"META","gex":0.0401,"iv":0.627,"adv_M":7707,"ng":0.332},{"t":"KO","gex":0.0416,"iv":0.207,"adv_M":999,"ng":0.289},{"t":"MSFT","gex":0.0439,"iv":0.297,"adv_M":9708,"ng":0.227},{"t":"AAPL","gex":0.0445,"iv":0.313,"adv_M":12344,"ng":0.244}],"rot":[50.0,33.3,50.0,66.7,33.3,50.0,83.3,66.7,66.7,33.3,50.0,33.3,83.3,50.0,50.0,100.0,100.0,66.7,16.7,50.0,66.7,83.3,66.7,50.0,33.3,83.3,33.3,50.0,16.7,33.3,66.7,33.3,33.3,66.7,50.0,50.0,66.7,50.0,50.0,33.3,33.3,66.7,66.7,83.3,66.7,50.0,50.0,50.0,66.7,66.7,33.3,50.0,83.3,33.3,83.3,83.3,66.7,50.0,50.0],"rot_c":[33.3,83.3,66.7,33.3,33.3,83.3,50.0,50.0,83.3,66.7,66.7,66.7,66.7,33.3,33.3,66.7,33.3,83.3,33.3,50.0,66.7,50.0,50.0,66.7,83.3,66.7,33.3,50.0,50.0,33.3,33.3,33.3,66.7,50.0,16.7,66.7,50.0,66.7,66.7,33.3,83.3,16.7,66.7,83.3,50.0,50.0,50.0,33.3,50.0,83.3,50.0,50.0,33.3,16.7,66.7,33.3,83.3,66.7,66.7],"rot_f":["2021-10-29","2021-11-26","2021-12-31","2022-01-28","2022-02-25","2022-03-25","2022-04-29","2022-05-27","2022-06-24","2022-07-29","2022-08-31","2022-09-30","2022-10-28","2022-11-25","2022-12-30","2023-01-27","2023-02-24","2023-03-31","2023-04-28","2023-05-26","2023-06-30","2023-07-28","2023-08-31","2023-09-29","2023-10-27","2023-11-24","2023-12-29","2024-01-26","2024-02-23","2024-03-28","2024-04-26","2024-05-31","2024-06-28","2024-07-26","2024-08-30","2024-09-27","2024-10-25","2024-11-29","2024-12-27","2025-01-31","2025-02-28","2025-03-28","2025-04-25","2025-05-30","2025-06-27","2025-07-25","2025-08-29","2025-09-26","2025-10-31","2025-11-26","2025-12-26","2026-01-30","2026-02-27","2026-03-27","2026-04-23","2026-05-29","2026-06-26","2026-07-31","2026-08-28"]};
+const S=(t,a={})=>{const e=document.createElementNS("http://www.w3.org/2000/svg",t);
+  for(const k in a)e.setAttribute(k,a[k]);return e};
+const tip=document.getElementById('tip');
+function showTip(ev,html){tip.innerHTML=html;tip.style.opacity=1;
+  const r=tip.getBoundingClientRect();let x=ev.clientX+14,y=ev.clientY-10;
+  if(x+r.width>innerWidth-8)x=ev.clientX-r.width-14;
+  if(y+r.height>innerHeight-8)y=innerHeight-r.height-8;
+  if(y<8)y=8;tip.style.left=x+'px';tip.style.top=y+'px'}
+function hideTip(){tip.style.opacity=0}
+const fmt=(v,d=1)=>v.toFixed(d).replace('.',',');
+const pct=(v,d=1)=>(v>0?'+':'')+fmt(v,d)+' %';
+const C={teal:'var(--teal)',brick:'var(--brick)',violet:'var(--violet)',
+  ref:'var(--ref)',ref2:'var(--ref-2)',grid:'var(--grid)',ink3:'var(--ink-3)',
+  ink2:'var(--ink-2)',pass:'var(--pass)',fail:'var(--fail)',card:'var(--card)'};
+
+function frame(host,W,H,m){const s=S('svg',{viewBox:`0 0 ${W} ${H}`,width:W,height:H,
+  role:'img'});host.appendChild(s);return s}
+
+/* ---------- 1. scatter Gamma vs 1/IV ---------- */
+(function(){const host=document.getElementById('c-scatter');if(!host)return;
+  const W=860,H=380,m={t:16,r:20,b:46,l:56};
+  const pts=D.por_ticker.map(o=>({t:o.t,x:1/o.iv,y:o.gex,iv:o.iv,adv:o.adv_M}));
+  const xs=pts.map(p=>p.x),ys=pts.map(p=>p.y);
+  const x0=Math.min(...xs)*.94,x1=Math.max(...xs)*1.04,y0=0,y1=Math.max(...ys)*1.08;
+  const X=v=>m.l+(v-x0)/(x1-x0)*(W-m.l-m.r),Y=v=>H-m.b-(v-y0)/(y1-y0)*(H-m.t-m.b);
+  const s=frame(host,W,H);
+  for(let i=0;i<=4;i++){const v=y0+(y1-y0)*i/4,y=Y(v);
+    s.appendChild(S('line',{x1:m.l,x2:W-m.r,y1:y,y2:y,stroke:C.grid,'stroke-width':1}));
+    const tx=S('text',{x:m.l-9,y:y+4,'text-anchor':'end','font-size':10,fill:C.ink3});
+    tx.textContent=v.toFixed(2).replace('.',',');s.appendChild(tx)}
+  for(let i=0;i<=4;i++){const v=x0+(x1-x0)*i/4,x=X(v);
+    const tx=S('text',{x:x,y:H-m.b+18,'text-anchor':'middle','font-size':10,fill:C.ink3});
+    tx.textContent=v.toFixed(1).replace('.',',');s.appendChild(tx)}
+  // regresion
+  const n=pts.length,mx=xs.reduce((a,b)=>a+b)/n,my=ys.reduce((a,b)=>a+b)/n;
+  let num=0,den=0;pts.forEach(p=>{num+=(p.x-mx)*(p.y-my);den+=(p.x-mx)**2});
+  const b=num/den,a=my-b*mx;
+  s.appendChild(S('line',{x1:X(x0),y1:Y(a+b*x0),x2:X(x1),y2:Y(a+b*x1),
+    stroke:C.ink3,'stroke-width':1.5,'stroke-dasharray':'5 4',opacity:.55}));
+  const LG=new Set(['RIVN','MU','AMD','CAT','CRM','BA']),
+        SH=new Set(['KO','AAPL','PG','WMT','CVX','JPM']);
+  pts.forEach(p=>{const col=LG.has(p.t)?C.teal:SH.has(p.t)?C.brick:C.ref;
+    const g=S('g',{});
+    g.appendChild(S('circle',{cx:X(p.x),cy:Y(p.y),r:LG.has(p.t)||SH.has(p.t)?6:4.5,
+      fill:col,stroke:C.card,'stroke-width':2,opacity:LG.has(p.t)||SH.has(p.t)?1:.5}));
+    if(LG.has(p.t)||SH.has(p.t)){const t=S('text',{x:X(p.x),y:Y(p.y)-11,
+      'text-anchor':'middle','font-size':10.5,fill:C.ink2,'font-weight':500});
+      t.textContent=p.t;g.appendChild(t)}
+    g.style.cursor='pointer';
+    g.addEventListener('mousemove',e=>showTip(e,
+      `<div class="t-h">${p.t}</div>
+       <div class="t-r"><span>Γ media</span><b>${p.y.toFixed(4).replace('.',',')}</b></div>
+       <div class="t-r"><span>IV media</span><b>${(p.iv*100).toFixed(1).replace('.',',')} %</b></div>
+       <div class="t-r"><span>ADV$</span><b>${p.adv.toLocaleString('es')} M</b></div>`));
+    g.addEventListener('mouseleave',hideTip);s.appendChild(g)});
+  const xl=S('text',{x:(m.l+W-m.r)/2,y:H-6,'text-anchor':'middle','font-size':10.5,
+    fill:C.ink3});xl.textContent='1 / volatilidad implícita';s.appendChild(xl);
+  const yl=S('text',{x:-(m.t+H-m.b)/2,y:14,'text-anchor':'middle','font-size':10.5,
+    fill:C.ink3,transform:'rotate(-90)'});yl.textContent='Γ media';s.appendChild(yl);
+})();
+
+/* ---------- 2. % gamma negativa por año ---------- */
+(function(){const host=document.getElementById('c-gamneg');if(!host)return;
+  const W=860,H=250,m={t:22,r:20,b:38,l:46};
+  const a=D.gamma_anual,n=a.anios.length,y1=55;
+  const bw=(W-m.l-m.r)/n*.52;
+  const s=frame(host,W,H);
+  const Y=v=>H-m.b-v/y1*(H-m.t-m.b);
+  for(let i=0;i<=5;i++){const v=i*11,y=Y(v);
+    s.appendChild(S('line',{x1:m.l,x2:W-m.r,y1:y,y2:y,stroke:C.grid,'stroke-width':1}));
+    const t=S('text',{x:m.l-9,y:y+4,'text-anchor':'end','font-size':10,fill:C.ink3});
+    t.textContent=v+' %';s.appendChild(t)}
+  s.appendChild(S('line',{x1:m.l,x2:W-m.r,y1:Y(21.8),y2:Y(21.8),stroke:C.ink3,
+    'stroke-width':1.5,'stroke-dasharray':'6 4'}));
+  const rl=S('text',{x:W-m.r,y:Y(21.8)-7,'text-anchor':'end','font-size':10,fill:C.ink3});
+  rl.textContent='21,8 % — referencia del paper';s.appendChild(rl);
+  a.anios.forEach((yr,i)=>{const cx=m.l+(i+.5)*(W-m.l-m.r)/n,v=a.pct_neg[i];
+    const hgt=H-m.b-Y(v);
+    const g=S('g',{});g.style.cursor='pointer';
+    g.appendChild(S('rect',{x:cx-bw/2,y:Y(v),width:bw,height:Math.max(hgt,1),rx:4,
+      fill:v>21.8?C.brick:C.teal}));
+    const t=S('text',{x:cx,y:Y(v)-8,'text-anchor':'middle','font-size':11,
+      fill:C.ink2,'font-weight':500});t.textContent=fmt(v)+' %';g.appendChild(t);
+    const l=S('text',{x:cx,y:H-m.b+18,'text-anchor':'middle','font-size':10.5,fill:C.ink3});
+    l.textContent=yr;g.appendChild(l);
+    g.addEventListener('mousemove',e=>showTip(e,
+      `<div class="t-h">${yr}</div>
+       <div class="t-r"><span>Γ negativa</span><b>${fmt(v)} %</b></div>
+       <div class="t-r"><span>Γ mediana</span><b>${a.mediana[i].toFixed(4).replace('.',',')}</b></div>
+       <div class="t-r"><span>IV mediana</span><b>${(a.iv[i]*100).toFixed(1).replace('.',',')} %</b></div>
+       <div class="t-r"><span>net/gross</span><b>${a.net_gross[i].toFixed(3).replace('.',',')}</b></div>`));
+    g.addEventListener('mouseleave',hideTip);s.appendChild(g)});
+})();
+
+/* ---------- 3. t-stats crudo vs ortogonal ---------- */
+(function(){const host=document.getElementById('c-tstat');if(!host)return;
+  const rows=[{l:'Γ agregada',a:-2.44,b:0.04,k:1},
+              {l:'Γ slow (>31d)',a:-6.52,b:-2.66,k:1},
+              {l:'Γ fast (≤31d)',a:-0.22,b:null,k:1},
+              {l:'Γ OTM',a:4.24,b:null,k:1},
+              {l:'IV sola (control)',a:22.56,b:null,k:0},
+              {l:'Vol previa (control)',a:22.88,b:null,k:0}];
+  const W=860,rh=42,H=rows.length*rh+56,m={l:168,r:26,t:26,b:30};
+  const lo=-8,hi=24;
+  const X=v=>m.l+(v-lo)/(hi-lo)*(W-m.l-m.r);
+  const s=frame(host,W,H);
+  [-2,2].forEach(v=>{s.appendChild(S('line',{x1:X(v),x2:X(v),y1:m.t-8,y2:H-m.b,
+    stroke:C.ink3,'stroke-width':1,'stroke-dasharray':'4 4',opacity:.7}))});
+  s.appendChild(S('line',{x1:X(0),x2:X(0),y1:m.t-8,y2:H-m.b,stroke:C.grid,'stroke-width':1.5}));
+  const sl=S('text',{x:X(-2),y:m.t-13,'text-anchor':'middle','font-size':9.5,fill:C.ink3});
+  sl.textContent='t = ±2';s.appendChild(sl);
+  rows.forEach((r,i)=>{const cy=m.t+i*rh+rh/2;
+    const lab=S('text',{x:m.l-14,y:cy+4,'text-anchor':'end','font-size':11.5,
+      fill:r.k?C.ink2:C.ink3});lab.textContent=r.l;s.appendChild(lab);
+    const col=r.k? (Math.abs(r.a)>=2? (r.a<0?C.teal:C.brick) : C.ref) : C.ref;
+    const x0=X(0),xa=X(r.a);
+    const g=S('g',{});g.style.cursor='pointer';
+    g.appendChild(S('rect',{x:Math.min(x0,xa),y:cy-9,width:Math.abs(xa-x0),height:12,
+      rx:3,fill:col}));
+    const va=S('text',{x:xa+(r.a<0?-8:8),y:cy+1,'text-anchor':r.a<0?'end':'start',
+      'font-size':10.5,fill:C.ink2,'font-weight':500});
+    va.textContent=fmt(r.a,2);g.appendChild(va);
+    if(r.b!==null){const xb=X(r.b);
+      g.appendChild(S('rect',{x:Math.min(x0,xb),y:cy+5,width:Math.max(Math.abs(xb-x0),1.5),
+        height:11,rx:3,fill:'none',stroke:Math.abs(r.b)>=2?C.teal:C.ink3,'stroke-width':1.6,
+        'stroke-dasharray':'3 2.5'}));
+      const vb=S('text',{x:xb+(r.b<0?-8:8),y:cy+15,'text-anchor':r.b<0?'end':'start',
+        'font-size':10,fill:C.ink3});vb.textContent=fmt(r.b,2);g.appendChild(vb)}
+    g.addEventListener('mousemove',e=>showTip(e,
+      `<div class="t-h">${r.l}</div>
+       <div class="t-r"><span>t crudo</span><b>${fmt(r.a,2)}</b></div>`+
+      (r.b!==null?`<div class="t-r"><span>t ortogonal a IV</span><b>${fmt(r.b,2)}</b></div>`:'')));
+    g.addEventListener('mouseleave',hideTip);s.appendChild(g)});
+  const k=S('text',{x:m.l,y:H-8,'font-size':10,fill:C.ink3});
+  k.textContent='sólido = variable cruda   ·   punteado = ortogonalizada a IV';
+  s.appendChild(k);
+})();
+</script>
+<script>
+/* ---------- 4. curvas de capital ---------- */
+(function(){const host=document.getElementById('c-equity');if(!host)return;
+  const c=D.curvas,n=c.f.length,W=880,H=400,m={t:18,r:74,b:34,l:50};
+  const series=[{k:'bench',col:C.ref2,dash:null,lab:'30 nombres'},
+                {k:'spy',col:C.ref,dash:'6 4',lab:'SPY'},
+                {k:'ls',col:C.brick,dash:null,lab:'L-S semanal'},
+                {k:'neutral',col:C.teal,dash:null,lab:'L-S neutral'}];
+  let lo=1e9,hi=-1e9;series.forEach(s=>c[s.k].forEach(v=>{lo=Math.min(lo,v);hi=Math.max(hi,v)}));
+  lo=Math.floor(lo/10)*10-4;hi=Math.ceil(hi/10)*10+4;
+  const X=i=>m.l+i/(n-1)*(W-m.l-m.r),Y=v=>H-m.b-(v-lo)/(hi-lo)*(H-m.t-m.b);
+  const s=frame(host,W,H);
+  for(let v=Math.ceil(lo/25)*25;v<=hi;v+=25){const y=Y(v);
+    s.appendChild(S('line',{x1:m.l,x2:W-m.r,y1:y,y2:y,stroke:C.grid,'stroke-width':1}));
+    const t=S('text',{x:m.l-9,y:y+4,'text-anchor':'end','font-size':10,fill:C.ink3});
+    t.textContent=v;s.appendChild(t)}
+  s.appendChild(S('line',{x1:m.l,x2:W-m.r,y1:Y(100),y2:Y(100),stroke:C.ink3,'stroke-width':1.2,opacity:.5}));
+  // banda 2022
+  const i22=c.f.findIndex(f=>f>='2022-01-01'),j22=c.f.findIndex(f=>f>='2022-10-14');
+  if(i22>0&&j22>i22){s.appendChild(S('rect',{x:X(i22),y:m.t,width:X(j22)-X(i22),
+    height:H-m.t-m.b,fill:C.ink3,opacity:.055}));
+    const bt=S('text',{x:(X(i22)+X(j22))/2,y:m.t+13,'text-anchor':'middle','font-size':9.5,
+      fill:C.ink3,'letter-spacing':'.08em'});bt.textContent='CAÍDA 2022';s.appendChild(bt)}
+  // años
+  let last='';c.f.forEach((f,i)=>{const y=f.slice(0,4);
+    if(y!==last&&i>0){last=y;s.appendChild(S('line',{x1:X(i),x2:X(i),y1:H-m.b,y2:H-m.b+5,
+      stroke:C.ink3,'stroke-width':1}));
+      const t=S('text',{x:X(i),y:H-m.b+18,'text-anchor':'middle','font-size':10,fill:C.ink3});
+      t.textContent=y;s.appendChild(t)}else if(!last)last=y});
+  series.forEach(se=>{const d=c[se.k].map((v,i)=>`${i?'L':'M'}${X(i).toFixed(1)} ${Y(v).toFixed(1)}`).join(' ');
+    const p=S('path',{d,fill:'none',stroke:se.col,'stroke-width':se.k==='neutral'?2.4:1.9,
+      'stroke-linejoin':'round','stroke-linecap':'round'});
+    if(se.dash)p.setAttribute('stroke-dasharray',se.dash);s.appendChild(p);
+    const fv=c[se.k][n-1];
+    const t=S('text',{x:W-m.r+7,y:Y(fv)+4,'font-size':10.5,fill:se.col,'font-weight':600});
+    t.textContent=fmt(fv);s.appendChild(t)});
+  // hover
+  const cl=S('line',{x1:0,x2:0,y1:m.t,y2:H-m.b,stroke:C.ink3,'stroke-width':1,opacity:0});
+  s.appendChild(cl);
+  const dots=series.map(se=>{const d=S('circle',{r:4.5,fill:se.col,stroke:C.card,
+    'stroke-width':2,opacity:0});s.appendChild(d);return d});
+  const hit=S('rect',{x:m.l,y:m.t,width:W-m.l-m.r,height:H-m.t-m.b,fill:'transparent'});
+  hit.style.cursor='crosshair';s.appendChild(hit);
+  hit.addEventListener('mousemove',e=>{const r=s.getBoundingClientRect();
+    const px=(e.clientX-r.left)/r.width*W;
+    let i=Math.round((px-m.l)/(W-m.l-m.r)*(n-1));i=Math.max(0,Math.min(n-1,i));
+    cl.setAttribute('x1',X(i));cl.setAttribute('x2',X(i));cl.setAttribute('opacity',.4);
+    series.forEach((se,k)=>{dots[k].setAttribute('cx',X(i));
+      dots[k].setAttribute('cy',Y(c[se.k][i]));dots[k].setAttribute('opacity',1)});
+    showTip(e,`<div class="t-h">${c.f[i]}</div>`+series.slice().reverse().map(se=>
+      `<div class="t-r"><span><i class="dot" style="background:${se.col}"></i>${se.lab}</span><b>${fmt(c[se.k][i])}</b></div>`).join(''))});
+  hit.addEventListener('mouseleave',()=>{hideTip();cl.setAttribute('opacity',0);
+    dots.forEach(d=>d.setAttribute('opacity',0))});
+})();
+
+/* ---------- 5. barras anuales ---------- */
+(function(){const host=document.getElementById('c-anual');if(!host)return;
+  const a=D.anual,W=420,H=290,m={t:16,r:12,b:44,l:42};
+  const ks=[{k:'neutral',c:C.teal,l:'L-S neutral'},{k:'spy',c:C.ref,l:'SPY'},
+            {k:'bench',c:C.ref2,l:'30 nombres'}];
+  let lo=0,hi=0;ks.forEach(s=>a[s.k].forEach(v=>{lo=Math.min(lo,v);hi=Math.max(hi,v)}));
+  lo=Math.floor(lo/20)*20;hi=Math.ceil(hi/20)*20;
+  const n=a.anios.length,gw=(W-m.l-m.r)/n,bw=gw*.24;
+  const Y=v=>H-m.b-(v-lo)/(hi-lo)*(H-m.t-m.b);
+  const s=frame(host,W,H);
+  for(let v=lo;v<=hi;v+=20){const y=Y(v);
+    s.appendChild(S('line',{x1:m.l,x2:W-m.r,y1:y,y2:y,stroke:v===0?C.ink3:C.grid,
+      'stroke-width':v===0?1.3:1}));
+    const t=S('text',{x:m.l-8,y:y+4,'text-anchor':'end','font-size':9.5,fill:C.ink3});
+    t.textContent=v;s.appendChild(t)}
+  a.anios.forEach((yr,i)=>{const cx=m.l+(i+.5)*gw;
+    ks.forEach((se,j)=>{const v=a[se.k][i],x=cx+(j-1)*(bw+2.5)-bw/2;
+      const g=S('g',{});g.style.cursor='pointer';
+      g.appendChild(S('rect',{x,y:Math.min(Y(v),Y(0)),width:bw,
+        height:Math.max(Math.abs(Y(v)-Y(0)),1.5),rx:3,fill:se.c}));
+      g.addEventListener('mousemove',e=>showTip(e,
+        `<div class="t-h">${yr}${a.n[i]<45?' · año parcial':''}</div>`+
+        ks.map(kk=>`<div class="t-r"><span><i class="dot" style="background:${kk.c}"></i>${kk.l}</span><b>${pct(a[kk.k][i])}</b></div>`).join('')));
+      g.addEventListener('mouseleave',hideTip);s.appendChild(g)});
+    const t=S('text',{x:cx,y:H-m.b+16,'text-anchor':'middle','font-size':9.5,fill:C.ink3});
+    t.textContent=yr;s.appendChild(t)});
+  const lg=['L-S neutral','SPY','30 nombres'];
+  lg.forEach((l,i)=>{const x=m.l+i*112;
+    s.appendChild(S('rect',{x,y:H-16,width:11,height:3,rx:1.5,fill:ks[i].c}));
+    const t=S('text',{x:x+16,y:H-12,'font-size':9.5,fill:C.ink3});t.textContent=l;s.appendChild(t)});
+})();
+
+/* ---------- 6. drawdown ---------- */
+(function(){const host=document.getElementById('c-dd');if(!host)return;
+  const dd=D.dd,f=D.curvas.f,n=f.length,W=420,H=290,m={t:16,r:14,b:44,l:42};
+  const ks=[{k:'ls',c:C.brick,l:'L-S semanal'},{k:'bench',c:C.ref2,l:'30 nombres'},
+            {k:'neutral',c:C.teal,l:'L-S neutral'}];
+  const lo=-58,X=i=>m.l+i/(n-1)*(W-m.l-m.r),Y=v=>m.t+(0-v)/(0-lo)*(H-m.t-m.b);
+  const s=frame(host,W,H);
+  for(let v=0;v>=lo;v-=15){const y=Y(v);
+    s.appendChild(S('line',{x1:m.l,x2:W-m.r,y1:y,y2:y,stroke:v===0?C.ink3:C.grid,
+      'stroke-width':v===0?1.3:1}));
+    const t=S('text',{x:m.l-8,y:y+4,'text-anchor':'end','font-size':9.5,fill:C.ink3});
+    t.textContent=v;s.appendChild(t)}
+  ks.forEach(se=>{const pts=dd[se.k].map((v,i)=>`${X(i).toFixed(1)} ${Y(v).toFixed(1)}`).join(' L');
+    s.appendChild(S('path',{d:`M${X(0)} ${Y(0)} L${pts} L${X(n-1)} ${Y(0)} Z`,
+      fill:se.c,opacity:se.k==='neutral'?.2:.13}));
+    s.appendChild(S('path',{d:`M${pts.replace(/ L/g,' L')}`.replace(/^M/,'M'),fill:'none',
+      stroke:se.c,'stroke-width':se.k==='neutral'?2:1.5}))});
+  let last='';f.forEach((ff,i)=>{const y=ff.slice(0,4);
+    if(y!==last&&i>0){last=y;const t=S('text',{x:X(i),y:H-m.b+16,'text-anchor':'middle',
+      'font-size':9.5,fill:C.ink3});t.textContent="'"+y.slice(2);s.appendChild(t)}
+    else if(!last)last=y});
+  ks.slice().reverse().forEach((se,i)=>{const x=m.l+i*112;
+    s.appendChild(S('rect',{x,y:H-16,width:11,height:3,rx:1.5,fill:se.c}));
+    const t=S('text',{x:x+16,y:H-12,'font-size':9.5,fill:C.ink3});t.textContent=se.l;s.appendChild(t)});
+  const hit=S('rect',{x:m.l,y:m.t,width:W-m.l-m.r,height:H-m.t-m.b,fill:'transparent'});
+  hit.style.cursor='crosshair';s.appendChild(hit);
+  hit.addEventListener('mousemove',e=>{const r=s.getBoundingClientRect();
+    let i=Math.round(((e.clientX-r.left)/r.width*W-m.l)/(W-m.l-m.r)*(n-1));
+    i=Math.max(0,Math.min(n-1,i));
+    showTip(e,`<div class="t-h">${f[i]}</div>`+ks.slice().reverse().map(se=>
+      `<div class="t-r"><span><i class="dot" style="background:${se.c}"></i>${se.l}</span><b>${fmt(dd[se.k][i])} %</b></div>`).join(''))});
+  hit.addEventListener('mouseleave',hideTip);
+})();
+</script>
+<script>
+/* ---------- 7. heatmap mensual ---------- */
+(function(){const host=document.getElementById('c-heat');if(!host)return;
+  const M=D.mensual,anios=[...new Set(M.meses.map(m=>m.slice(0,4)))];
+  const W=860,cell=52,ch=40,m={t:30,l:52,r:14,b:16},H=m.t+anios.length*ch+m.b;
+  const cw=(W-m.l-m.r)/12;
+  const s=frame(host,W,H);
+  const MES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  MES.forEach((mm,i)=>{const t=S('text',{x:m.l+(i+.5)*cw,y:m.t-11,'text-anchor':'middle',
+    'font-size':10,fill:C.ink3});t.textContent=mm;s.appendChild(t)});
+  const vals=M.neutral.filter(v=>v!==null);
+  const mx=Math.max(...vals.map(Math.abs));
+  anios.forEach((yr,r)=>{const y=m.t+r*ch;
+    const t=S('text',{x:m.l-10,y:y+ch/2+4,'text-anchor':'end','font-size':10.5,fill:C.ink3});
+    t.textContent=yr;s.appendChild(t);
+    for(let c=0;c<12;c++){const key=yr+'-'+String(c+1).padStart(2,'0');
+      const idx=M.meses.indexOf(key);
+      const x=m.l+c*cw;
+      if(idx<0){s.appendChild(S('rect',{x:x+1,y:y+1,width:cw-3,height:ch-3,rx:4,
+        fill:C.grid,opacity:.35}));continue}
+      const v=M.neutral[idx],a=Math.min(Math.abs(v)/mx,1);
+      const g=S('g',{});g.style.cursor='pointer';
+      g.appendChild(S('rect',{x:x+1,y:y+1,width:cw-3,height:ch-3,rx:4,
+        fill:v>=0?C.pass:C.fail,opacity:.14+a*.72}));
+      const tv=S('text',{x:x+cw/2,y:y+ch/2+4,'text-anchor':'middle','font-size':10,
+        fill:a>.55?'#fff':C.ink2,'font-weight':500});
+      tv.textContent=fmt(v);g.appendChild(tv);
+      g.addEventListener('mousemove',e=>showTip(e,
+        `<div class="t-h">${key}</div>
+         <div class="t-r"><span><i class="dot" style="background:${C.teal}"></i>L-S neutral</span><b>${pct(v,2)}</b></div>
+         <div class="t-r"><span><i class="dot" style="background:${C.ref}"></i>SPY</span><b>${pct(M.spy[idx],2)}</b></div>
+         <div class="t-r"><span><i class="dot" style="background:${C.ref2}"></i>30 nombres</span><b>${pct(M.bench[idx],2)}</b></div>`));
+      g.addEventListener('mouseleave',hideTip);s.appendChild(g)}});
+})();
+
+/* ---------- 8. composicion: barras divergentes ---------- */
+(function(){const host=document.getElementById('c-comp');if(!host)return;
+  const fl=D.frec.largo,fc=D.frec.corto;
+  const all=[...new Set([...Object.keys(fl),...Object.keys(fc)])]
+    .map(t=>({t,L:fl[t]||0,S:fc[t]||0}))
+    .map(o=>({...o,net:o.L-o.S})).sort((a,b)=>b.net-a.net);
+  const W=860,rh=21,m={t:34,l:0,r:0,b:14},H=m.t+all.length*rh+m.b;
+  const mid=W/2,half=(W-140)/2,mxv=32;
+  const s=frame(host,W,H);
+  const hL=S('text',{x:mid-90,y:16,'text-anchor':'end','font-size':10.5,fill:C.teal,
+    'font-weight':600,'letter-spacing':'.06em'});hL.textContent='PATA LARGA (Γ baja)';
+  s.appendChild(hL);
+  const hS=S('text',{x:mid+90,y:16,'font-size':10.5,fill:C.brick,'font-weight':600,
+    'letter-spacing':'.06em'});hS.textContent='PATA CORTA (Γ alta)';s.appendChild(hS);
+  [10,20,30].forEach(v=>{[-1,1].forEach(sg=>{
+    const x=mid+sg*(70+v/mxv*half);
+    s.appendChild(S('line',{x1:x,x2:x,y1:m.t-6,y2:H-m.b,stroke:C.grid,'stroke-width':1}));
+    const t=S('text',{x,y:m.t-10,'text-anchor':'middle','font-size':9,fill:C.ink3});
+    t.textContent=v;s.appendChild(t)})});
+  all.forEach((o,i)=>{const y=m.t+i*rh;
+    const g=S('g',{});g.style.cursor='pointer';
+    const lab=S('text',{x:mid,y:y+rh/2+4,'text-anchor':'middle','font-size':10.5,
+      fill:C.ink2,'font-weight':500});lab.textContent=o.t;g.appendChild(lab);
+    if(o.L){const w=o.L/mxv*half;
+      g.appendChild(S('rect',{x:mid-70-w,y:y+4,width:w,height:rh-9,rx:3,fill:C.teal,
+        opacity:.35+o.L/mxv*.65}));
+      const t=S('text',{x:mid-76-w,y:y+rh/2+3.5,'text-anchor':'end','font-size':9.5,
+        fill:C.ink3});t.textContent=o.L;g.appendChild(t)}
+    if(o.S){const w=o.S/mxv*half;
+      g.appendChild(S('rect',{x:mid+70,y:y+4,width:w,height:rh-9,rx:3,fill:C.brick,
+        opacity:.35+o.S/mxv*.65}));
+      const t=S('text',{x:mid+76+w,y:y+rh/2+3.5,'font-size':9.5,fill:C.ink3});
+      t.textContent=o.S;g.appendChild(t)}
+    g.addEventListener('mousemove',e=>showTip(e,
+      `<div class="t-h">${o.t}</div>
+       <div class="t-r"><span><i class="dot" style="background:${C.teal}"></i>veces en pata larga</span><b>${o.L}</b></div>
+       <div class="t-r"><span><i class="dot" style="background:${C.brick}"></i>veces en pata corta</span><b>${o.S}</b></div>
+       <div class="t-r"><span>de 60 rebalanceos</span><b>${o.L+o.S}</b></div>`));
+    g.addEventListener('mouseleave',hideTip);s.appendChild(g)});
+})();
+
+/* ---------- 9. estres 2022 ---------- */
+(function(){const host=document.getElementById('c-stress');if(!host)return;
+  const per=[{l:'2022 completo',v:{n:15.4,s:-16.4,b:-42.4,w:-14.6}},
+             {l:'Caída ene–oct 2022',v:{n:25.1,s:-23.8,b:-46.8,w:0.0}},
+             {l:'Resto (2023–2026)',v:{n:9.1,s:20.1,b:39.8,w:10.3}}];
+  const ks=[{k:'n',c:C.teal,l:'L-S neutral'},{k:'w',c:C.brick,l:'L-S semanal'},
+            {k:'s',c:C.ref,l:'SPY'},{k:'b',c:C.ref2,l:'30 nombres'}];
+  const W=860,H=310,m={t:20,r:20,b:56,l:48},lo=-50,hi=45;
+  const gw=(W-m.l-m.r)/per.length,bw=gw*.17;
+  const Y=v=>H-m.b-(v-lo)/(hi-lo)*(H-m.t-m.b);
+  const s=frame(host,W,H);
+  for(let v=lo;v<=hi;v+=15){const y=Y(v);
+    s.appendChild(S('line',{x1:m.l,x2:W-m.r,y1:y,y2:y,stroke:v===0?C.ink3:C.grid,
+      'stroke-width':v===0?1.3:1}));
+    const t=S('text',{x:m.l-8,y:y+4,'text-anchor':'end','font-size':9.5,fill:C.ink3});
+    t.textContent=v+' %';s.appendChild(t)}
+  per.forEach((p,i)=>{const cx=m.l+(i+.5)*gw;
+    ks.forEach((se,j)=>{const v=p.v[se.k],x=cx+(j-1.5)*(bw+4)-bw/2;
+      const g=S('g',{});g.style.cursor='pointer';
+      g.appendChild(S('rect',{x,y:Math.min(Y(v),Y(0)),width:bw,
+        height:Math.max(Math.abs(Y(v)-Y(0)),1.5),rx:3,fill:se.c}));
+      const t=S('text',{x:x+bw/2,y:v>=0?Y(v)-7:Y(v)+14,'text-anchor':'middle',
+        'font-size':10,fill:C.ink2,'font-weight':500});t.textContent=fmt(v);g.appendChild(t);
+      g.addEventListener('mousemove',e=>showTip(e,`<div class="t-h">${p.l}</div>`+
+        ks.map(kk=>`<div class="t-r"><span><i class="dot" style="background:${kk.c}"></i>${kk.l}</span><b>${pct(p.v[kk.k])}</b></div>`).join('')));
+      g.addEventListener('mouseleave',hideTip);s.appendChild(g)});
+    const t=S('text',{x:cx,y:H-m.b+20,'text-anchor':'middle','font-size':10.5,fill:C.ink2});
+    t.textContent=p.l;s.appendChild(t)});
+  ks.forEach((se,i)=>{const x=m.l+i*150;
+    s.appendChild(S('rect',{x,y:H-16,width:11,height:3,rx:1.5,fill:se.c}));
+    const t=S('text',{x:x+16,y:H-12,'font-size':9.5,fill:C.ink3});t.textContent=se.l;
+    s.appendChild(t)});
+})();
+</script>

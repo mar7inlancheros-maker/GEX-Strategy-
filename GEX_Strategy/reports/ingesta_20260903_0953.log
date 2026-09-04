@@ -1,0 +1,29 @@
+# ingesta extension4  2021-09-01 -> 2022-08-31  53 dias  inicio 09:53:54
+
+[equities] cierre y volumen del subyacente...
+  ERROR: BentoClientError: 422 data_start_before_available_start
+`start` in query ('2021-07-18 00:00:00+00:00') was before the available start of dataset EQUS.SUMMARY ('2024-07-01 00:00:00+00:00'). Try requesting with a later `start`.
+documentation: https://databento.com/docs/api-reference-historical/basics/datasets
+
+[calidad] 9 dias con calidad reducida segun Databento:
+    2021-09-06  missing
+    2021-11-25  missing
+    2021-12-24  missing
+    2022-01-17  missing
+    2022-02-21  missing
+    2022-04-15  missing
+    2022-05-30  missing
+    2022-06-20  missing
+    2022-07-04  missing
+    (se ingestan igual, quedan marcados para excluirlos en la puerta P2)
+
+[opciones] 53 dias por bajar, 4 en paralelo
+  fecha        contratos        OI   quotes   unidos  pub  desc%   def    oi  cbbo  notas
+  2021-09-24      76,018    76,018   70,018   54,123    1   7.9%    31    31    57  
+  2021-09-17      73,034    73,034   66,077   52,447    1   9.5%    21    49    53  
+  2021-09-03      72,794    72,794   66,716   53,894    1   8.3%    29    53    59  
+  2021-09-10      72,596    72,596   67,000   53,458    1   7.7%    28    55    68  
+  2021-10-01      76,572    76,572   70,935   54,412    1   7.4%    47    18    69  
+  2021-10-08      77,204    77,204   71,011   54,919    1   8.0%    46    23    68  
+  2021-10-22      74,998    74,998   68,513   54,312    1   8.6%    32    25    60  
+  2021-10-15      76,672    76,672   69,993   54,553    1   8.7%    43    24   108  
